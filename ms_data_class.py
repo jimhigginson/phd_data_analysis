@@ -13,12 +13,13 @@ class PeakPickedData(PCA):
 
     It also performs PCA and allows rapid plotting of the results.
 
+    On instantiating the class, it expects a pandas object with data with matching metadata including patient number, sample number, energy device, path, binary path, filename and presumed class
+
     '''
-    def __init__(self, data, metadata):
-        self.data = data
-        self.metadata = metadata
+    def __init__(self, raw_data):
+        self.raw_data = raw_data
         self._n_PCs = 100
-        self.leu_enk_dropper()
+        self._data = self.data
         self.pca() #runs pca method below so it's ready
 
 
@@ -32,6 +33,26 @@ class PeakPickedData(PCA):
     'Tumour':1,
     'No tumour':-1
     }
+
+    metadata_columns = [
+        'patient_number',
+        'sample_number',
+        'energy_device',
+        'path',
+        'binary_path',
+        'filename',
+        'presumed_class'
+            ]
+
+    @property
+    def data(self:)
+        '''
+
+        Removes the metadata columns from the raw input object to leave peak picked data
+
+        '''
+
+        self.data = self.raw_data.drop(metadata_columns, axis=1)
 
     @property
     def log_transform_data(self):
