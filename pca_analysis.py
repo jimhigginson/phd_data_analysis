@@ -14,6 +14,8 @@ class PeakPickingPCAPlotter():
     # Class variable
     
     pcs_to_plot = 5
+    fig_height = tfParams['textwidth']/pcs_to_plot
+    # multifigure plots like pairplot use height ** per axis ** not overall
     today = date.today()
     # for the corner plots, 5 is a sweet spot of informative but not too cluttered
 
@@ -37,7 +39,7 @@ class PeakPickingPCAPlotter():
         Returns a pretty corner graph of the PCs 1-5, coloured by binary tumour/non-tumour status of the tissue
         '''
         print('Plotting binary PCA plot')
-        self.fig = sns.pairplot(data = self.pc_plot_data, hue='binary_path', corner=True, markers='.', height = tfParams['textwidth'], aspect = 1, plot_kws={'alpha':0.6, 'linewidth':0}, palette=['red','green'])
+        self.fig = sns.pairplot(data = self.pc_plot_data, hue='binary_path', corner=True, markers='.', height = self.fig_height, plot_kws={'alpha':0.6, 'linewidth':0}, palette=['red','green'])
         self.fig.savefig(f'./figures/{self.today}_binary_pc_plot.pdf')
         return(self.fig)
 
