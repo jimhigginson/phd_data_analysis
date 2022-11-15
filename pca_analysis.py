@@ -18,6 +18,7 @@ class PeakPickingPCAPlotter():
     # for the corner plots, 5 is a sweet spot of informative but not too cluttered
 
     def __init__(self, data_object): #maybe can import rcParams here to control the graphics centrally?
+        print('Initialising PCA plotting object')
         self.data = data_object
         self.pc_plot_data = self.data.principal_components.iloc[:, 0:self.pcs_to_plot].join([self.data.binary_path, self.data.path, self.data.date])
 
@@ -26,6 +27,7 @@ class PeakPickingPCAPlotter():
     # Do i want to change this so it programmatically describes the data I'm plotting?
 
     def scree_plot(self):
+        print('Plotting scree plot')
         self.ax = sns.barplot(x = self.data.pc_labels, y = self.data.pca.explained_variance_ratio_ * 100, color = 'k')
         return(self.ax)
 
@@ -34,14 +36,16 @@ class PeakPickingPCAPlotter():
         '''
         Returns a pretty corner graph of the PCs 1-5, coloured by binary tumour/non-tumour status of the tissue
         '''
+        print('Plotting binary PCA plot')
         self.fig = sns.pairplot(data = self.pc_plot_data, hue='binary_path', corner=True, markers='.', height = tfParams['textwidth'], aspect = 1, plot_kws={'alpha':0.6, 'linewidth':0}, palette=['red','green'])
-        self.fig.savefig(f'{self.today}_binary_pc_plot.pdf')
+        self.fig.savefig(f'./figures/{self.today}_binary_pc_plot.pdf')
         return(self.fig)
 
     def date_pc_plot(self):
         '''
         Returns a pretty corner graph of the PCs 1-5, coloured by date of analysis 
         '''
+        print('Plotting datewise PCA plot')
         self.ax = sns.pairplot(data = self.pc_plot_data, hue='date', corner=True, markers='.', plot_kws={'alpha':0.6, 'linewidth':0})
         return(self.ax)
 
@@ -49,7 +53,13 @@ class PeakPickingPCAPlotter():
         '''
         Returns a pretty corner graph of the PCs 1-5, coloured by class
         '''
+        print('Plotting multiclass PCA plot')
         self.ax = sns.pairplot(data = self.pc_plot_data, hue='path', corner=True, markers='.', plot_kws={'alpha':0.6, 'linewidth':0})
         return(self.ax)
 
 # Loadings plot
+    def loadings_plot(self):
+        '''
+        Going to print a plot of loadings for PC1, maybe 2 and three as a horizontal strip??
+        '''
+        print('Holder text that will eventually verbose the plot creation')
