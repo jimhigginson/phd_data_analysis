@@ -1,0 +1,7 @@
+# resources here
+
+
+### LOAD VIRTUAL ENVIRONMENT
+
+module load anaconda3/personal
+source activate model_building 
