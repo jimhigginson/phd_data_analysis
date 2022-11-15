@@ -79,6 +79,7 @@ class PeakPickedData(PCA):
         '''
 
         Removes the metadata columns from the raw input object to leave peak picked data
+        Runs at initialisation and does not require re-running
 
         '''
 
@@ -104,7 +105,7 @@ class PeakPickedData(PCA):
     @property
     def n_PCs(self):
         '''
-        Number of principal components - defaults to 10 but can be changed.
+        Number of principal components - defaults to 100 but can be changed.
         '''
         return(self._n_PCs)
 
@@ -132,9 +133,6 @@ class PeakPickedData(PCA):
         return(self.ax)
 
 
-# Need to find a way to be able to re-run this with new numbers of PCs as set above, at the moment the fit can only be run once.
 
-# next steps:
-## loadings plot
 
 
