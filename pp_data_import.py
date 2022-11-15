@@ -13,9 +13,9 @@ data_path = 'insert data path here'
 metadata_path = 'insert metadata path here'
 
 
-data = pd.read_csv(data_path)
+#data = pd.read_csv(data_path)
 
-metadata = pd.read_csv(metadata_path)
+#metadata = pd.read_csv(metadata_path)
 
 
 ##########
@@ -24,4 +24,4 @@ metadata = pd.read_csv(metadata_path)
 ##########
 
 
-
+print(f'Hey, here is the data_path: {data_path}\nAnd here is the metadata path {metadata_path}.\n')
