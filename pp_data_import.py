@@ -1,21 +1,14 @@
 import pandas as pd
 
+
 ##########
 # path in rcs directory to ex-vivo peak-picked matrix
 ##########
 
-data_path = 'insert data path here'
+data_path = './data/combined_data_metadata.csv'
 
-##########
-# path in rcs directory to ex-vivo metadata
-##########
+data = pd.read_csv(data_path)
 
-metadata_path = 'insert metadata path here'
-
-
-#data = pd.read_csv(data_path)
-
-#metadata = pd.read_csv(metadata_path)
 
 
 ##########
@@ -24,4 +17,4 @@ metadata_path = 'insert metadata path here'
 ##########
 
 
-print(f'Hey, here is the data_path: {data_path}\nAnd here is the metadata path {metadata_path}.\n')
+print(f'Hey, here is the data_path: {data_path}.\n')
