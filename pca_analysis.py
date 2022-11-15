@@ -40,8 +40,8 @@ class PeakPickingPCAPlotter():
         Returns a pretty corner graph of the PCs 1-5, coloured by binary tumour/non-tumour status of the tissue
         '''
         print('Plotting binary PCA plot')
-        self.fig = sns.pairplot(data = self.pc_plot_data, hue='binary_path', corner=True, markers='.', height = self.fig_height, plot_kws={'alpha':0.6, 'linewidth':0, 'legend':False}, palette=['red','green'])
-        sns.move_legend(self.fig, 'top right')
+        self.fig = sns.pairplot(data = self.pc_plot_data, hue='binary_path', corner=True, markers='.', height = self.fig_height, plot_kws={'alpha':0.6, 'linewidth':0}, palette=['red','green'])
+        sns.move_legend(self.fig, 'upper center')
         self.fig.add_legend(title='Pathological classification')
         #self.fig.set_title('Title here')
         self.binary_plot_path = f'./figures/{self.today}_binary_pc_plot.pdf'
