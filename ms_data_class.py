@@ -9,7 +9,7 @@ class PeakPickedData(PCA):
 
     It also performs PCA and allows rapid plotting of the results.
 
-    On instantiating the class, it expects a pandas object with data with matching metadata including patient number, sample number, energy device, path, binary path, filename and presumed class
+    On instantiating the class, it expects a pandas object with data with matching metadata including patient number, sample number, energy device, date, path, binary path, filename and presumed class
     '''
 
     def __init__(self, raw_data):
@@ -37,8 +37,42 @@ class PeakPickedData(PCA):
         'path',
         'binary_path',
         'filename',
-        'presumed_class'
+        'presumed_class',
+        'date'
             ]
+
+    @property
+    def patient_number(self):
+        '''
+        Pulls the patient numbers as a series for grouping and cross-validation models
+        '''
+
+        patient_number = self.raw_data['patient_number'].astype('category')
+        return(patient_number)
+
+    @property
+    def path(self):
+        '''
+        Pulls the pathological diagnosis as a pandas series
+        '''
+        path = self.raw_data['path'].astype('category')
+        return(path)
+
+    @property
+    def binary_path(self):
+        '''
+        Pulls the tumour/non-tumour binary pathology as a series
+        '''
+        binary_path = self.raw_data['binary_path'].astype('category')
+        return(binary_path)
+
+    @property
+    def date(self):
+        '''
+        Pulls the date on which the sample was run
+        '''
+        date = self.raw_data['date']
+        return(date)
 
     @property
     def data(self):
@@ -93,7 +127,7 @@ class PeakPickedData(PCA):
         Requests input from the user as to the number of PCs to plot in a pairgrid then returns a pretty corner graph
         '''
         self.pcs_to_plot = int(input('Please type how many principal components you would like to plot, based on the scree plot: '))
-        self.pc_plot_data = self.principal_components.iloc[:, 0:self.pcs_to_plot].join(self.metadata.binary_path)
+        self.pc_plot_data = self.principal_components.iloc[:, 0:self.pcs_to_plot].join(self.binary_path)
         self.ax = sns.pairplot(self.pc_plot_data, hue='binary_path', corner=True, markers='.', plot_kws={'alpha':0.6, 'linewidth':0}, palette=['red','green'])
         return(self.ax)
 
