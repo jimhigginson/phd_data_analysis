@@ -1,7 +1,3 @@
-'''
-In this module I'm going to create (crib from my previous effort) and refine a class that can store the peak-picked data and metadata to allow easy repetition of data analysis
-'''
-
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -14,8 +10,8 @@ class PeakPickedData(PCA):
     It also performs PCA and allows rapid plotting of the results.
 
     On instantiating the class, it expects a pandas object with data with matching metadata including patient number, sample number, energy device, path, binary path, filename and presumed class
-
     '''
+
     def __init__(self, raw_data):
         self.raw_data = raw_data
         self._n_PCs = 100
@@ -45,14 +41,15 @@ class PeakPickedData(PCA):
             ]
 
     @property
-    def data(self:)
+    def data(self):
         '''
 
         Removes the metadata columns from the raw input object to leave peak picked data
 
         '''
 
-        self.data = self.raw_data.drop(metadata_columns, axis=1)
+        data = self.raw_data.drop(self.metadata_columns, axis=1)
+        return(data)
 
     @property
     def log_transform_data(self):
