@@ -116,23 +116,3 @@ class PeakPickedData(PCA):
             self.pc_labels.append('PC'+str(i+1))
         self.principal_components = pd.DataFrame(data = self.pca.fit_transform(self.log_transform_data.values), columns = self.pc_labels)
         self.loadings = pd.DataFrame(self.pca.components_.T, columns = self.pc_labels).set_index(self.data.columns)
-
-
-    def scree_plot(self):
-        self.ax = sns.barplot(x = self.pc_labels, y = self.pca.explained_variance_ratio_ * 100, color = 'k')
-        return(self.ax)
-
-
-    def pc_plot(self):
-        '''
-        Requests input from the user as to the number of PCs to plot in a pairgrid then returns a pretty corner graph
-        '''
-        self.pcs_to_plot = int(input('Please type how many principal components you would like to plot, based on the scree plot: '))
-        self.pc_plot_data = self.principal_components.iloc[:, 0:self.pcs_to_plot].join(self.binary_path)
-        self.ax = sns.pairplot(self.pc_plot_data, hue='binary_path', corner=True, markers='.', plot_kws={'alpha':0.6, 'linewidth':0}, palette=['red','green'])
-        return(self.ax)
-
-
-
-
-
