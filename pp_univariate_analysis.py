@@ -71,6 +71,7 @@ class PeakPickingUnivariateAnalysis():
         return(volcano_data)
 
     def volcano_plot(self):
+        print('Plotting volcano plot')
         alpha = 0.4
         linestyle = '--'
         colour = 'gray'
