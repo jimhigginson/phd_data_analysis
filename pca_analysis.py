@@ -6,6 +6,7 @@ Means everything can be done really repeatably
 import seaborn as sns
 from datetime import date
 from thesis_figure_parameters import tfParams
+import matplotlib.pyplot as plt
 
 class PeakPickingPCAPlotter():
     '''
@@ -34,6 +35,7 @@ class PeakPickingPCAPlotter():
     # Do i want to change this so it programmatically describes the data I'm plotting?
 
     def scree_plot(self):
+        plt.clf()
         pcs_to_scree_plot = 10
         print(f'Plotting scree plot for first {pcs_to_scree_plot} principal components.')
         self.ax = sns.barplot(x = self.data.pc_labels[0:pcs_to_scree_plot], y = self.data.pca.explained_variance_ratio_[0:pcs_to_scree_plot]  * 100, color = 'k')
