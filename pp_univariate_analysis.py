@@ -1,8 +1,11 @@
-from datetime import datetime
+from datetime import date
 from scipy.stats import ttest_ind
 from statsmodels.stats.multitest import fdrcorrection
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from thesis_figure_parameters import tfParams
 
 class PeakPickingUnivariateAnalysis():
     '''
@@ -15,7 +18,8 @@ class PeakPickingUnivariateAnalysis():
 
     sig_threshold = -np.log10(0.05)
     fc_threshold = np.log2(2)
-    today = datetime.today()
+    today = date.today()
+    text_width = tfParams['textwidth']
 
     def __init__(self, data_object):
         print('Starting univariate analysis')
@@ -23,6 +27,7 @@ class PeakPickingUnivariateAnalysis():
         self.binary_path = data_object.binary_path
         # think carefully about whether to do this on log transformed data or normal data (double logging??)
         self.means = self.data.join(self.binary_path).groupby('binary_path').mean()
+        sns.set_context('paper')
 
     @property
     def fold_change(self):
@@ -59,10 +64,37 @@ class PeakPickingUnivariateAnalysis():
             'corrected_p_values':self.corrected_p_values,
             })
         volcano_data['significance'] = 'Non-significant'
+        upreg_filter = (volcano_data.log2fc >= self.fc_threshold) & (volcano_data.corrected_p_values >= self.sig_threshold)
+        downreg_filter = (volcano_data.log2fc <= -self.fc_threshold) & (volcano_data.corrected_p_values >= self.sig_threshold)
+        volcano_data.loc[upreg_filter, ['significance']] = 'Upregulated'
+        volcano_data.loc[downreg_filter, ['significance']] = 'Downregulated'
         return(volcano_data)
 
     def volcano_plot(self):
-        pass
+        alpha = 0.4
+        linestyle = '--'
+        colour = 'gray'
+        self.fig = sns.relplot(
+                data=self.volcano_data,
+                x = 'log2fc',
+                y = 'corrected_p_values',
+                hue = 'significance',
+                kind = 'scatter',
+                height = self.text_width,
+                aspect = 1,
+                alpha = 0.7,
+                s = 30, # marker size
+                marker = '.'
+                )
+        sns.move_legend(self.fig, loc='upper left', bbox_to_anchor=(0.15, 0.9), title = None)
+        self.fig.set_axis_labels('log$_2$ fold change','-log$_{10}$ corrected p value')
+        plt.axhline(self.sig_threshold, alpha = alpha, ls = linestyle, color = colour)
+        plt.axvline(self.fc_threshold, alpha = alpha, ls = linestyle, color = colour)
+        plt.axvline(-self.fc_threshold, alpha = alpha, ls = linestyle, color = colour)
+        volcano_path = f'./figures/{self.today}_volcano_plot.pdf'
+        print(f'Saving to {volcano_path}')
+        self.fig.savefig(volcano_path)
+        return(self.fig)
 
     def key_features():
         # take the key features from univariate analysis and print them here.
