@@ -5,3 +5,5 @@
 
 module load anaconda3/personal
 source activate model_building 
+
+python analysis_report_generator.py
