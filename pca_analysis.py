@@ -14,11 +14,15 @@ class PeakPickingPCAPlotter():
     # Class variable
     
     pcs_to_plot = 5
+    # for the corner plots, 5 is a sweet spot of informative but not too cluttered
     fig_height = tfParams['textwidth']/pcs_to_plot
     # multifigure plots like pairplot use height ** per axis ** not overall
     today = date.today()
-    sns.set_context('paper')
-    # for the corner plots, 5 is a sweet spot of informative but not too cluttered
+    sns.set_context('paper') # automatically sets axes to be best for print
+    alpha = 0.5 #alpha for plots - keeps it consistent
+    size = 2 #marker size in scatter plots
+    marker = '.' # matplotlib marker code for scatter plots
+
 
     def __init__(self, data_object): #maybe can import rcParams here to control the graphics centrally?
         print('Initialising PCA plotting object')
@@ -42,29 +46,43 @@ class PeakPickingPCAPlotter():
         print('Plotting binary PCA plot')
         self.fig = sns.PairGrid(data = self.pc_plot_data, hue='binary_path', corner=True, height = self.fig_height, palette=['green','red'])
         self.fig.map_diag(sns.histplot)
-        self.fig.map_offdiag(sns.scatterplot, markers='.', alpha=0.5, s=2)
+        self.fig.map_offdiag(sns.scatterplot, markers=self.marker, alpha=self.alpha, s=self.size)
         self.fig.add_legend(title='Pathological classification')
         sns.move_legend(self.fig, 'upper center')
         self.binary_plot_path = f'./figures/{self.today}_binary_pc_plot.pdf'
         print(f'Saving binary PCA plot to {self.binary_plot_path}')
         self.fig.savefig(self.binary_plot_path)
-        return(self.fig)
 
     def date_pc_plot(self):
         '''
         Returns a pretty corner graph of the PCs 1-5, coloured by date of analysis 
         '''
         print('Plotting datewise PCA plot')
-        self.ax = sns.pairplot(data = self.pc_plot_data, hue='date', corner=True, markers='.', plot_kws={'alpha':0.6, 'linewidth':0})
-        return(self.ax)
+        self.fig = sns.PairGrid(data = self.pc_plot_data, hue='date', corner=True, height = self.fig_height)
+        self.fig.map_diag(sns.histplot)
+        self.fig.map_offdiag(sns.scatterplot, markers='.', alpha=0.5, s=2)
+        self.fig.add_legend(title='Date of analysis')
+        sns.move_legend(self.fig, 'upper right')
+        self.date_plot_path = f'./figures/{self.today}_date_pc_plot.pdf'
+        print(f'Saving date PCA plot to {self.date_plot_path}')
+        self.fig.savefig(self.date_plot_path)
+
 
     def multiclass_pc_plot(self):
         '''
         Returns a pretty corner graph of the PCs 1-5, coloured by class
         '''
         print('Plotting multiclass PCA plot')
-        self.ax = sns.pairplot(data = self.pc_plot_data, hue='path', corner=True, markers='.', plot_kws={'alpha':0.6, 'linewidth':0})
-        return(self.ax)
+        ### EDIT THIS ###
+        self.fig = sns.PairGrid(data = self.pc_plot_data, hue='path', corner=True, height = self.fig_height)#, palette=['green','red'])
+        self.fig.map_diag(sns.histplot)
+        self.fig.map_offdiag(sns.scatterplot, markers=self.marker, alpha=self.alpha, s=self.size)
+        self.fig.add_legend(title='Pathological classification')
+        sns.move_legend(self.fig, 'upper right')
+        self.pathology_plot_path = f'./figures/{self.today}_pathology_pc_plot.pdf'
+        print(f'Saving pathology PCA plot to {self.pathology_plot_path}')
+        self.fig.savefig(self.pathology_plot_path)
+
 
 # Loadings plot
     def loadings_plot(self):
