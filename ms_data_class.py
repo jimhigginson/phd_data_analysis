@@ -75,6 +75,14 @@ class PeakPickedData(PCA):
         return(date)
 
     @property
+    def energy_device(self):
+        '''
+        Pulls the energy device used to generate each sample
+        '''
+        energy_device = self.raw_data['energy_device']
+        return(energy_device)
+
+    @property
     def data(self):
         '''
 
