@@ -13,8 +13,8 @@ class PeakPickingUnivariateAnalysis():
 
     # Class variables go here
 
-    sig_threshold = 0.05
-    fc_threshold = 2
+    sig_threshold = -np.log10(0.05)
+    fc_threshold = np.log2(2)
     today = datetime.today()
 
     def __init__(self, data_object):
@@ -50,16 +50,19 @@ class PeakPickingUnivariateAnalysis():
         corrected_p_values = -np.log10(fdrcorrection(self.t_test.pvalue)[1])
         return(corrected_p_values)
 
-    def volcano_plot(self):
+    @property
+    def volcano_data(self):
         # Volcano plot goes here
         print('Collating data for volcano plot')
-        self.volcano_data = pd.DataFrame({
+        volcano_data = pd.DataFrame({
             'log2fc':self.fold_change,
             'corrected_p_values':self.corrected_p_values,
             })
-        self.volcano_data['significance'] = 'Non-significant'
-        volcano_plot = self.volcano_data
-        return(volcano_plot)
+        volcano_data['significance'] = 'Non-significant'
+        return(volcano_data)
+
+    def volcano_plot(self):
+        pass
 
     def key_features():
         # take the key features from univariate analysis and print them here.
