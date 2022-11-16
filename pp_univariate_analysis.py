@@ -94,7 +94,6 @@ class PeakPickingUnivariateAnalysis():
         volcano_path = f'./figures/{self.today}_volcano_plot.pdf'
         print(f'Saving to {volcano_path}')
         self.fig.savefig(volcano_path)
-        return(self.fig)
 
     def key_features():
         # take the key features from univariate analysis and print them here.
