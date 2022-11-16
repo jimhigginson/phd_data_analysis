@@ -34,10 +34,15 @@ class PeakPickingPCAPlotter():
     # Do i want to change this so it programmatically describes the data I'm plotting?
 
     def scree_plot(self):
-        print('Plotting scree plot')
-        self.ax = sns.barplot(x = self.data.pc_labels, y = self.data.pca.explained_variance_ratio_ * 100, color = 'k')
-        return(self.ax)
-
+        pcs_to_scree_plot = 10
+        print(f'Plotting scree plot for first {pcs_to_scree_plot} principal components.')
+        self.ax = sns.barplot(x = self.data.pc_labels[0:pcs_to_scree_plot], y = self.data.pca.explained_variance_ratio_[0:pcs_to_scree_plot]  * 100, color = 'k')
+        self.ax.set(ylabel = 'Explained Variance (%)')
+        self.scree_path = f'./figures/{self.today}_scree.pdf'
+        self.fig = self.ax.get_figure()
+        self.fig.figsize=(self.fig_height, self.fig_height)
+        print(f'Saving scree plot to {self.scree_path}.')
+        self.fig.savefig(self.scree_path)
 
     def binary_pc_plot(self):
         '''
