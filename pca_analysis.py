@@ -27,7 +27,7 @@ class PeakPickingPCAPlotter():
     def __init__(self, data_object): #maybe can import rcParams here to control the graphics centrally?
         print('Initialising PCA plotting object')
         self.data = data_object
-        self.pc_plot_data = self.data.principal_components.iloc[:, 0:self.pcs_to_plot].join([self.data.binary_path, self.data.path, self.data.date])
+        self.pc_plot_data = self.data.principal_components.iloc[:, 0:self.pcs_to_plot].join([self.data.binary_path, self.data.path, self.data.date, self.data.energy_device])
 
     def __str__(self):
         return('Self encapsulated plotter function to allow easy repetition of PCA analysis')
@@ -67,7 +67,7 @@ class PeakPickingPCAPlotter():
         self.fig.map_diag(sns.histplot)
         self.fig.map_offdiag(sns.scatterplot, markers='.', alpha=0.5, s=2)
         self.fig.add_legend(title='Date of analysis')
-        sns.move_legend(self.fig, 'upper right')
+        sns.move_legend(self.fig, 'upper center')
         self.date_plot_path = f'./figures/{self.today}_date_pc_plot.pdf'
         print(f'Saving date PCA plot to {self.date_plot_path}')
         self.fig.savefig(self.date_plot_path)
@@ -78,15 +78,29 @@ class PeakPickingPCAPlotter():
         Returns a pretty corner graph of the PCs 1-5, coloured by class
         '''
         print('Plotting multiclass PCA plot')
-        ### EDIT THIS ###
-        self.fig = sns.PairGrid(data = self.pc_plot_data, hue='path', corner=True, height = self.fig_height)#, palette=['green','red'])
+        self.fig = sns.PairGrid(data = self.pc_plot_data, hue='path', corner=True, height = self.fig_height)
         self.fig.map_diag(sns.histplot)
         self.fig.map_offdiag(sns.scatterplot, markers=self.marker, alpha=self.alpha, s=self.size)
         self.fig.add_legend(title='Pathological classification')
-        sns.move_legend(self.fig, 'upper right')
+        sns.move_legend(self.fig, 'upper center')
         self.pathology_plot_path = f'./figures/{self.today}_pathology_pc_plot.pdf'
         print(f'Saving pathology PCA plot to {self.pathology_plot_path}')
         self.fig.savefig(self.pathology_plot_path)
+
+    def energy_device_pc_plot(self):
+        '''
+        Returns a PCA plot by energy device
+        '''
+        print('Plotting energy device PCA plot')
+        self.fig = sns.PairGrid(data = self.pc_plot_data, hue='energy_device', corner=True, height = self.fig_height)
+        self.fig.map_diag(sns.histplot)
+        self.fig.map_offdiag(sns.scatterplot, markers=self.marker, alpha=self.alpha, s=self.size)
+        self.fig.add_legend(title='Energy device used')
+        sns.move_legend(self.fig, 'upper center')
+        self.energy_plot_path = f'./figures/{self.today}_energy_pc_plot.pdf'
+        print(f'Saving energy device PCA plot to {self.energy_plot_path}')
+        self.fig.savefig(self.energy_plot_path)
+
 
 
 # Loadings plot
