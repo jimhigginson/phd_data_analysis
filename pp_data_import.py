@@ -7,14 +7,8 @@ import pandas as pd
 
 data_path = './data/combined_data_metadata.csv'
 
+print(f'Importing data from {data_path}')
+
 data = pd.read_csv(data_path)
 
-
-
-##########
-# Now the data is read in, instantiate it in the data class 
-# You know, the one that I'm totally about to make
-##########
-
-
-print(f'Hey, here is the data_path: {data_path}.\n')
+print(f'Data successfully imported\n')
