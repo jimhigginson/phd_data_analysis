@@ -12,7 +12,7 @@ class PeakPickModelBuilder():
 
     '''
     # class variables here
-    features_step = 400 # reduce to 1 for final rfecv
+    features_step = 1 # reduce to 1 for final rfecv
     logocv = LeaveOneGroupOut()
     scoring = 'balanced_accuracy' #or accuracy or roc_auc
 
@@ -34,9 +34,9 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 1, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 8, # change to 8 in RCS cluster
                 scoring = self.scoring # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -54,9 +54,9 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 1, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 8, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -71,16 +71,16 @@ class PeakPickModelBuilder():
         y = self.binary_path
         print(f'Instantiating random forest model and RFECV selector at {start_time} for the binary model')
         rf = RandomForestClassifier(
-                verbose=1,
+                #verbose=1,
                 n_jobs=1
                 )
         feature_selector = RFECV(
                 rf,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 2, # change to 8 in RCS cluster
-                verbose = 1,
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 8, # change to 8 in RCS cluster
+                # verbose = 1,
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -95,15 +95,15 @@ class PeakPickModelBuilder():
         y = self.path
         print(f'Instantiating Random Forest model and RFECV selector at {start_time} for the multiclass model')
         rf = RandomForestClassifier(
-                verbose=1,
+                # verbose=1,
                 n_jobs=1
                 )
         feature_selector = RFECV(
                 rf,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 1, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 8, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
