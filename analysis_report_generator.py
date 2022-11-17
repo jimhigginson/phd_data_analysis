@@ -4,9 +4,10 @@ from pp_univariate_analysis import PeakPickingUnivariateAnalysis
 from pca_analysis import PeakPickingPCAPlotter
 from pp_supervised_rfecv import PeakPickModelBuilder
 import pickle
-from datetime import datetime
+from datetime import datetime, date
 
-today = datetime.today()
+report_start = datetime.today()
+today = date.today()
 
 print('Starting data analysis')
 print('Generating report')
@@ -40,7 +41,17 @@ binary_lda = modeller.binary_lda()
 #binary_rf = modeller.binary_rf()
 #multiclass_rf = modeller.multiclass_rf()
 
+filenames = {
+    binary_lda : f'{today}_binary_lda_rfecv.pkl'
+        }
+model_path = './models/'
+
+for key, value in filenames:
+    filepath = f'{model_path}{value}'
+    file = open(filepath, 'wb')
+    pickle.dump(key, file)
+    file.close()
 
 
-
-print('Report generation complete')
+print(f'Report generation complete at {datetime.today}.')
+print(f'Report generation took {datetime.today - report_start}')
