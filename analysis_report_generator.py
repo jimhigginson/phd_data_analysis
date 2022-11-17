@@ -37,12 +37,15 @@ print('Instantiating model builder class')
 modeller = PeakPickModelBuilder(data)
 
 binary_lda = modeller.binary_lda()
-#multiclass_lda = modeller.multiclass_lda()
-#binary_rf = modeller.binary_rf()
-#multiclass_rf = modeller.multiclass_rf()
+multiclass_lda = modeller.multiclass_lda()
+binary_rf = modeller.binary_rf()
+multiclass_rf = modeller.multiclass_rf()
 
 filenames = {
-    binary_lda : f'{today}_binary_lda_rfecv.pkl'
+    binary_lda : f'{today}_binary_lda_rfecv.pkl',
+    multiclass_lda : f'{today}_multiclass_lda_rfecv.pkl',
+    binary_rf : f'{today}_binary_rf_rfecv.pkl',
+    multiclass_rf : f'{today}_multiclass_rf_rfecv.pkl'
         }
 model_path = './models/'
 
