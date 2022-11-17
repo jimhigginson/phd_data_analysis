@@ -3,6 +3,10 @@ from ms_data_class import PeakPickedData
 from pp_univariate_analysis import PeakPickingUnivariateAnalysis
 from pca_analysis import PeakPickingPCAPlotter
 from pp_supervised_rfecv import PeakPickModelBuilder
+import pickle
+from datetime import datetime
+
+today = datetime.today()
 
 print('Starting data analysis')
 print('Generating report')
@@ -32,9 +36,9 @@ print('Instantiating model builder class')
 modeller = PeakPickModelBuilder(data)
 
 binary_lda = modeller.binary_lda()
-multiclass_lda = modeller.multiclass_lda()
-binary_rf = modeller.binary_rf()
-multiclass_rf = modeller.multiclass_rf()
+#multiclass_lda = modeller.multiclass_lda()
+#binary_rf = modeller.binary_rf()
+#multiclass_rf = modeller.multiclass_rf()
 
 
 
