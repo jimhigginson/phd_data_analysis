@@ -1,8 +1,8 @@
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.feature_selection import RFECV
 from sklearn.model_selection import LeaveOneGroupOut
+from sklearn.ensemble import RandomForestClassifier
 
-import pickle
 from time import time
 
 class PeakPickModelBuilder():
@@ -13,6 +13,8 @@ class PeakPickModelBuilder():
     '''
     # class variables here
     features_step = 400 # reduce to 1 for final rfecv
+    logocv = LeaveOneGroupOut()
+    scoring = 'balanced_accuracy' #or accuracy or roc_auc
 
     def __init__(self, data_object):
         print('Initialising supervised analysis class')
@@ -27,14 +29,33 @@ class PeakPickModelBuilder():
         start_time = time()
         X = self.data
         y = self.binary_path
-        print(f'Instantiating LDA model and RFECV selector at {start_time}')
+        print(f'Instantiating LDA model and RFECV selector at {start_time} for the binary model')
         lda = LinearDiscriminantAnalysis()
-        logocv = LeaveOneGroupOut()
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
                 cv = 2, # change to logocv in RCS cluster
-                # logocv.split(features, target, groups=self.patient_number)
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 1, # change to 8 in RCS cluster
+                scoring = self.scoring # add in a scoring estimator
+                )
+        feature_selector.fit(X, y)
+        end_time = time()
+        print(f'Completing run at {end_time}.')
+        print(f'Feature selection took {end_time - start_time} seconds.')
+        return(feature_selector)
+
+    def multiclass_lda(self):
+        start_time = time()
+        X = self.data
+        y = self.path
+        print(f'Instantiating LDA model and RFECV selector at {start_time} for the multiclass model')
+        lda = LinearDiscriminantAnalysis()
+        feature_selector = RFECV(
+                lda,
+                step = self.features_step,
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = 1, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
@@ -43,4 +64,52 @@ class PeakPickModelBuilder():
         print(f'Completing run at {end_time}.')
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
+
+    def binary_rf(self):
+        start_time = time()
+        X = self.data
+        y = self.binary_path
+        print(f'Instantiating random forest model and RFECV selector at {start_time} for the binary model')
+        rf = RandomForestClassifier(
+                verbose=1,
+                n_jobs=1
+                )
+        feature_selector = RFECV(
+                rf,
+                step = self.features_step,
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 2, # change to 8 in RCS cluster
+                verbose = 1,
+                scoring = None # add in a scoring estimator
+                )
+        feature_selector.fit(X, y)
+        end_time = time()
+        print(f'Completing run at {end_time}.')
+        print(f'Feature selection took {end_time - start_time} seconds.')
+        return(feature_selector)
+
+    def multiclass_rf(self):
+        start_time = time()
+        X = self.data
+        y = self.path
+        print(f'Instantiating Random Forest model and RFECV selector at {start_time} for the multiclass model')
+        rf = RandomForestClassifier(
+                verbose=1,
+                n_jobs=1
+                )
+        feature_selector = RFECV(
+                rf,
+                step = self.features_step,
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = 1, # change to 8 in RCS cluster
+                scoring = None # add in a scoring estimator
+                )
+        feature_selector.fit(X, y)
+        end_time = time()
+        print(f'Completing run at {end_time}.')
+        print(f'Feature selection took {end_time - start_time} seconds.')
+        return(feature_selector)
+
 
