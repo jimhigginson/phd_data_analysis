@@ -46,12 +46,12 @@ filenames = {
         }
 model_path = './models/'
 
-for key, value in filenames:
+for key, value in filenames.items():
     filepath = f'{model_path}{value}'
     file = open(filepath, 'wb')
     pickle.dump(key, file)
     file.close()
 
 
-print(f'Report generation complete at {datetime.today}.')
-print(f'Report generation took {datetime.today - report_start}')
+print(f'Report generation complete at {datetime.today()}.')
+print(f'Report generation took {datetime.today() - report_start}')
