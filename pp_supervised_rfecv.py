@@ -36,7 +36,7 @@ class PeakPickModelBuilder():
                 step = self.features_step,
                 # cv = 2, # change to logocv in RCS cluster
                 cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 8, # change to 8 in RCS cluster
+                n_jobs = 2, # change to 8 in RCS cluster
                 scoring = self.scoring # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -56,7 +56,7 @@ class PeakPickModelBuilder():
                 step = self.features_step,
                 # cv = 2, # change to logocv in RCS cluster
                 cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 8, # change to 8 in RCS cluster
+                n_jobs = 2, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -79,7 +79,7 @@ class PeakPickModelBuilder():
                 step = self.features_step,
                 # cv = 2, # change to logocv in RCS cluster
                 cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 8, # change to 8 in RCS cluster
+                n_jobs = 2, # change to 8 in RCS cluster
                 # verbose = 1,
                 scoring = None # add in a scoring estimator
                 )
@@ -103,7 +103,7 @@ class PeakPickModelBuilder():
                 step = self.features_step,
                 # cv = 2, # change to logocv in RCS cluster
                 cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 8, # change to 8 in RCS cluster
+                n_jobs = 2, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
