@@ -12,7 +12,7 @@ class PeakPickModelBuilder():
 
     '''
     # class variables here
-    features_step = 1 # reduce to 1 for final rfecv
+    features_step = 500 # reduce to 1 for final rfecv
     logocv = LeaveOneGroupOut()
     scoring = 'balanced_accuracy' #or accuracy or roc_auc
 
