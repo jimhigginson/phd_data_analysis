@@ -87,8 +87,19 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
         model_performance = round(100 * self.model.score(self.features, self.target), 2)
         return(model_performance)
 
+    @property
     def confusion_matrix(self):
-        cm = ConfusionMatrixDisplay.from_estimator(self.model, self.features, self.target, cmap = self.colours)
-        self.fig, self.ax = plt.subplots(figsize=(self.figure_width, self.figure_width))
-        cm.plot(ax=self.ax)
-        self.fig.savefig(f'{self.figure_path}{self.filename}_confusion_matrix.pdf')
+        self.cm = ConfusionMatrixDisplay.from_estimator(self.model, self.features, self.target, cmap = self.colours)
+        return(self.cm)
+
+    @property
+    def roc(self):
+        self.roc = RocCurveDisplay.from_estimator(self.model, self.features, self.target)
+        return(self.roc)
+
+    def plotter(self):
+        plt.clf()
+        self.fig, self.axs = plt.subplots(1, 2, figsize=(self.figure_width, self.figure_width/3))
+        self.confusion_matrix.plot(ax = self.axs[0])
+        self.roc.plot(ax = self.axs[1])
+        return(self.fig)
