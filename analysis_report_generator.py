@@ -51,8 +51,10 @@ model_path = './models/'
 
 for key, value in filenames.items():
     filepath = f'{model_path}{value}'
+    print(f'Opening {filepath} for pickling')
     file = open(filepath, 'wb')
     pickle.dump(key, file)
+    print(f'{key} pickled to {filepath}')
     file.close()
 
 

@@ -12,7 +12,7 @@ class PeakPickModelBuilder():
 
     '''
     # class variables here
-    features_step = 500 # reduce to 1 for final rfecv
+    features_step = 200 # reduce to 1 for final rfecv
     logocv = LeaveOneGroupOut()
     scoring = 'balanced_accuracy' #or accuracy or roc_auc
 
@@ -34,8 +34,8 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
-                # cv = 2, # change to logocv in RCS cluster
-                cv = self.logocv.split(X, y, groups=self.patient_number),
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = 2, # change to 8 in RCS cluster
                 scoring = self.scoring # add in a scoring estimator
                 )
@@ -54,8 +54,8 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
-                # cv = 2, # change to logocv in RCS cluster
-                cv = self.logocv.split(X, y, groups=self.patient_number),
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = 2, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
@@ -77,8 +77,8 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 rf,
                 step = self.features_step,
-                # cv = 2, # change to logocv in RCS cluster
-                cv = self.logocv.split(X, y, groups=self.patient_number),
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = 2, # change to 8 in RCS cluster
                 # verbose = 1,
                 scoring = None # add in a scoring estimator
@@ -101,8 +101,8 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 rf,
                 step = self.features_step,
-                # cv = 2, # change to logocv in RCS cluster
-                cv = self.logocv.split(X, y, groups=self.patient_number),
+                cv = 2, # change to logocv in RCS cluster
+                # cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = 2, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
