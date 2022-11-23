@@ -12,9 +12,10 @@ class PeakPickModelBuilder():
 
     '''
     # class variables here
-    features_step = 200 # reduce to 1 for final rfecv
+    features_step = 300 # reduce to 1 for final rfecv
     logocv = LeaveOneGroupOut()
     scoring = 'balanced_accuracy' #or accuracy or roc_auc
+    n_jobs = 4 # for multi-threading the rfecv.
 
     def __init__(self, data_object):
         print('Initialising supervised analysis class')
@@ -24,6 +25,7 @@ class PeakPickModelBuilder():
         self.path = data_object.path
         self.binary_path = data_object.binary_path
         self.patient_number = data_object.patient_number
+        print(f'Building all models with recursive feature elimination with {self.features_step} features eliminated at a time, and {self.n_jobs} n_jobs for multithreading')
 
     def binary_lda(self):
         start_time = time()
@@ -34,9 +36,9 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 2, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = self.n_jobs, # change to 8 in RCS cluster
                 scoring = self.scoring # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -54,9 +56,9 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 lda,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 2, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = self.n_jobs, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
@@ -77,9 +79,9 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 rf,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 2, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = self.n_jobs, # change to 8 in RCS cluster
                 # verbose = 1,
                 scoring = None # add in a scoring estimator
                 )
@@ -101,9 +103,9 @@ class PeakPickModelBuilder():
         feature_selector = RFECV(
                 rf,
                 step = self.features_step,
-                cv = 2, # change to logocv in RCS cluster
-                # cv = self.logocv.split(X, y, groups=self.patient_number),
-                n_jobs = 2, # change to 8 in RCS cluster
+                # cv = 2, # change to logocv in RCS cluster
+                cv = self.logocv.split(X, y, groups=self.patient_number),
+                n_jobs = self.n_jobs, # change to 8 in RCS cluster
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
