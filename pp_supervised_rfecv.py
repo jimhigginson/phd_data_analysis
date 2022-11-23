@@ -27,6 +27,7 @@ class PeakPickModelBuilder():
         self.patient_number = data_object.patient_number
         print(f'Building all models with recursive feature elimination with {self.features_step} features eliminated at a time, and {self.n_jobs} n_jobs for multithreading')
 
+    @property
     def binary_lda(self):
         start_time = time()
         X = self.data
@@ -39,7 +40,7 @@ class PeakPickModelBuilder():
                 # cv = 2, # change to logocv in RCS cluster
                 cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = self.n_jobs, # change to 8 in RCS cluster
-                scoring = self.scoring # add in a scoring estimator
+                scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
         end_time = time()
@@ -47,6 +48,7 @@ class PeakPickModelBuilder():
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
 
+    @property
     def multiclass_lda(self):
         start_time = time()
         X = self.data
@@ -67,6 +69,7 @@ class PeakPickModelBuilder():
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
 
+    @property
     def binary_rf(self):
         start_time = time()
         X = self.data
@@ -91,6 +94,7 @@ class PeakPickModelBuilder():
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
 
+    @property
     def multiclass_rf(self):
         start_time = time()
         X = self.data
