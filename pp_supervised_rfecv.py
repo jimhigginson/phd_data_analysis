@@ -14,7 +14,7 @@ class PeakPickModelBuilder():
     # class variables here
     features_step = 300 # reduce to 1 for final rfecv
     logocv = LeaveOneGroupOut()
-    scoring = 'balanced_accuracy' #or accuracy or roc_auc
+    scoring = None #or accuracy or roc_auc
     n_jobs = 4 # for multi-threading the rfecv.
 
     def __init__(self, data_object):
