@@ -40,7 +40,7 @@ modeller = PeakPickModelBuilder(data)
 binary_lda = modeller.binary_lda
 #multiclass_lda = modeller.multiclass_lda
 #binary_rf = modeller.binary_rf
-multiclass_rf = modeller.multiclass_rf
+#multiclass_rf = modeller.multiclass_rf
 
 print(f'Report generation complete at {datetime.today()}.')
 print(f'Report generation took {datetime.today() - report_start}')
