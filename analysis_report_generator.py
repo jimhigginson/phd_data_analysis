@@ -4,6 +4,7 @@ from pp_univariate_analysis import PeakPickingUnivariateAnalysis
 from pca_analysis import PeakPickingPCAPlotter
 from pp_supervised_rfecv import PeakPickModelBuilder
 import pickle
+import pandas as pd
 from datetime import datetime, date
 
 report_start = datetime.today()
@@ -40,12 +41,12 @@ modeller = PeakPickModelBuilder(data)
 binary_lda = modeller.binary_lda
 #multiclass_lda = modeller.multiclass_lda
 #binary_rf = modeller.binary_rf
-#multiclass_rf = modeller.multiclass_rf
+multiclass_rf = modeller.multiclass_rf
 
 filenames = {
     binary_lda : f'{today}_binary_lda_rfecv',
-    multiclass_lda : f'{today}_multiclass_lda_rfecv',
-    binary_rf : f'{today}_binary_rf_rfecv',
+#    multiclass_lda : f'{today}_multiclass_lda_rfecv',
+#    binary_rf : f'{today}_binary_rf_rfecv',
     multiclass_rf : f'{today}_multiclass_rf_rfecv'
         }
 
