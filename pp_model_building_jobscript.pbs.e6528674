@@ -1,0 +1,6 @@
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/pandas/core/arraylike.py:397: RuntimeWarning: divide by zero encountered in log2
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+Traceback (most recent call last):
+  File "/rds/general/user/jah119/home/phd_data_analysis/analysis_report_generator.py", line 39, in <module>
+    binary_lda = modeller.binary_lda()
+TypeError: 'RFECV' object is not callable

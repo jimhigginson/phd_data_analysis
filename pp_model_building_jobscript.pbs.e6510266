@@ -1,0 +1,52 @@
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/pandas/core/arraylike.py:397: RuntimeWarning: divide by zero encountered in log2
+  result = getattr(ufunc, method)(*inputs, **kwargs)
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/sklearn/metrics/_classification.py:2006: UserWarning: y_pred contains classes not in y_true
+  warnings.warn("y_pred contains classes not in y_true")
+Traceback (most recent call last):
+  File "/rds/general/user/jah119/home/phd_data_analysis/analysis_report_generator.py", line 55, in <module>
+    pickle.dump(key, file)
+TypeError: cannot pickle 'generator' object
