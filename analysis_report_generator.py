@@ -66,7 +66,7 @@ for key, value in filenames.items():
     else:
         y = data.path
     print(f'Fitting {key.estimator} with selected features for pickling')
-    model = key.estimator.fit(data.log_transform_data, y)
+    model = key.estimator.fit(data.log_transform_data[key.get_support], y)
     pickle.dump(model, file)
     print(f'Re-fitted {key} pickled to {filepath}')
     file.close()
