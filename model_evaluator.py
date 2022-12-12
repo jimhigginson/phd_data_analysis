@@ -21,11 +21,33 @@ def title(string):
 data = PeakPickedData(data)
 model_path = './models/'
 figure_path = './figures/'
-binary_lda_file = 'binary_lda_rfecv'
-binary_lda = pickle.load(open(f'{model_path}{today}_{binary_lda_file}.pkl','rb'))
+
+date_to_analyse = '2022-12-08'
+# can adjust this if I do more runs
+
+model_stems = [
+'binary_lda_rfecv',
+'binary_rf_rfecv',
+'multiclass_lda_rfecv',
+'multiclass_rf_rfecv'
+]
 
 
+# bit of code to test loading one model - delete once I get it running smoothly in a loop
+binary_lda = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[0]}.pkl','rb'))
+binary_rf = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[1]}.pkl','rb'))
+multiclass_lda = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[2]}.pkl','rb'))
+multiclass_rf = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[3]}.pkl','rb'))
 
+
+models = [
+binary_lda,
+binary_rf,
+multiclass_lda,
+multiclass_rf
+]
+
+'''
 
 ######################
 # Report starts here #
@@ -49,7 +71,6 @@ title('Model Performance')
 print(f'With these features, the cross-validated model achieved a {binary_lda.scoring} score of {round(100 * binary_lda.score(data.log_transform_data, data.binary_path), 2)}%')
 
 print(f'Now to create a confusion matrix...')
-'''
 fig = ConfusionMatrixDisplay.from_estimator(binary_lda, data.log_transform_data, data.binary_path)
 plt.show()
 
@@ -65,23 +86,18 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
     '''
 
     # Class variables here
-    # perhaps text width from tfParams?
-    model_path = './models/'
-    figure_path = './figures/'
-    today = date.today()
     figure_width = tfParams['textwidth']
     colours = plt.cm.plasma
 
-    def __init__(self, filename, features, target):
-        self.filename = filename
-        self.filepath = f'{self.model_path}'+ self.filename + '.pkl'
-        file = open(self.filepath, 'rb')
-        self.model = pickle.load(file)
-        file.close()
+    def __init__(self, model, features, target):
+        self.model = model
         self.features = features
         self.target = target
         # Run the functions here so it all fires up on being called
 
+    def __str__(self):
+        return(f'This class instance is evaluating the RFECV {self.model} model, fitted to predict the following {len(self.model.classes_)} classes: {self.model.classes_}')
+    
     @property
     def model_performance(self):
         model_performance = round(100 * self.model.score(self.features, self.target), 2)
@@ -94,8 +110,8 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
 
     @property
     def roc(self):
-        self.roc = RocCurveDisplay.from_estimator(self.model, self.features, self.target)
-        return(self.roc)
+        self.roc_plot = RocCurveDisplay.from_estimator(self.model, self.features, self.target)
+        return(self.roc_plot)
 
     def plotter(self):
         plt.clf()
@@ -103,3 +119,11 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
         self.confusion_matrix.plot(ax = self.axs[0])
         self.roc.plot(ax = self.axs[1])
         return(self.fig)
+
+
+
+
+
+
+test = ModelEvaluator(models[0], data.data, data.binary_path)
+icle = ModelEvaluator(models[2], data.data, data.path)
