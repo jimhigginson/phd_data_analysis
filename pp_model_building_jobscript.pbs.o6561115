@@ -1,0 +1,105 @@
+Importing data from ./data/combined_data_metadata.csv
+Data successfully imported
+
+Starting data analysis
+Generating report
+Initialising PCA plotting object
+Starting univariate analysis
+Starting univariate and unsupervised analysis
+Plotting volcano plot
+Collating data for volcano plot
+Calculating log2 fold change
+Correcting for false discovery rate using Benjamini-Hochberg correction
+Performing independent t-test for each feature, comparing tumour with normal
+Saving to ./figures/2022-11-29_volcano_plot.pdf
+Plotting scree plot for first 10 principal components.
+Saving scree plot to ./figures/2022-11-29_scree.pdf.
+Plotting binary PCA plot
+Saving binary PCA plot to ./figures/2022-11-29_binary_pc_plot.pdf
+Plotting datewise PCA plot
+Saving date PCA plot to ./figures/2022-11-29_date_pc_plot.pdf
+Plotting multiclass PCA plot
+Saving pathology PCA plot to ./figures/2022-11-29_pathology_pc_plot.pdf
+Plotting energy device PCA plot
+Saving energy device PCA plot to ./figures/2022-11-29_energy_pc_plot.pdf
+Holder text that will eventually verbose the plot creation
+Univariate and unsupervised analysis complete
+Starting multivariate model generation
+Instantiating model builder class
+Initialising supervised analysis class
+Importing data object
+Building all models with recursive feature elimination with 700 features eliminated at a time, and 4 n_jobs for multithreading
+Instantiating LDA model and RFECV selector at 1669712836.5318892 for the binary model
+Completing run at 1669712950.1382236.
+Feature selection took 113.60633444786072 seconds.
+Instantiating LDA model and RFECV selector at 1669712950.1383414 for the multiclass model
+Completing run at 1669713053.9673195.
+Feature selection took 103.82897806167603 seconds.
+Instantiating random forest model and RFECV selector at 1669713053.9673576 for the binary model
+Completing run at 1669713133.8318667.
+Feature selection took 79.86450910568237 seconds.
+Instantiating Random Forest model and RFECV selector at 1669713133.831898 for the multiclass model
+Completing run at 1669713223.261342.
+Feature selection took 89.42944407463074 seconds.
+##########################
+Opening ./models/2022-11-29_binary_lda_rfecv.pkl for pickling
+##########################
+RFECV model for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c333997df0>,
+      estimator=LinearDiscriminantAnalysis(), n_jobs=4, step=700) had 4373 features
+Exporting features for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c333997df0>,
+      estimator=LinearDiscriminantAnalysis(), n_jobs=4, step=700)
+Evaluating whether model was binary or multiclass for fitting with correct targets
+Fitting LinearDiscriminantAnalysis() with selected features for pickling
+Re-fitted RFECV(cv=<generator object BaseCrossValidator.split at 0x14c333997df0>,
+      estimator=LinearDiscriminantAnalysis(), n_jobs=4, step=700) pickled to ./models/2022-11-29_binary_lda_rfecv.pkl
+##########################
+
+
+
+##########################
+Opening ./models/2022-11-29_multiclass_lda_rfecv.pkl for pickling
+##########################
+RFECV model for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332a6ad50>,
+      estimator=LinearDiscriminantAnalysis(), n_jobs=4, step=700) had 4373 features
+Exporting features for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332a6ad50>,
+      estimator=LinearDiscriminantAnalysis(), n_jobs=4, step=700)
+Evaluating whether model was binary or multiclass for fitting with correct targets
+Fitting LinearDiscriminantAnalysis() with selected features for pickling
+Re-fitted RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332a6ad50>,
+      estimator=LinearDiscriminantAnalysis(), n_jobs=4, step=700) pickled to ./models/2022-11-29_multiclass_lda_rfecv.pkl
+##########################
+
+
+
+##########################
+Opening ./models/2022-11-29_binary_rf_rfecv.pkl for pickling
+##########################
+RFECV model for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332a6b0d0>,
+      estimator=RandomForestClassifier(n_jobs=1), n_jobs=4, step=700) had 173 features
+Exporting features for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332a6b0d0>,
+      estimator=RandomForestClassifier(n_jobs=1), n_jobs=4, step=700)
+Evaluating whether model was binary or multiclass for fitting with correct targets
+Fitting RandomForestClassifier(n_jobs=1) with selected features for pickling
+Re-fitted RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332a6b0d0>,
+      estimator=RandomForestClassifier(n_jobs=1), n_jobs=4, step=700) pickled to ./models/2022-11-29_binary_rf_rfecv.pkl
+##########################
+
+
+
+##########################
+Opening ./models/2022-11-29_multiclass_rf_rfecv.pkl for pickling
+##########################
+RFECV model for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332199e70>,
+      estimator=RandomForestClassifier(n_jobs=1), n_jobs=4, step=700) had 173 features
+Exporting features for RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332199e70>,
+      estimator=RandomForestClassifier(n_jobs=1), n_jobs=4, step=700)
+Evaluating whether model was binary or multiclass for fitting with correct targets
+Fitting RandomForestClassifier(n_jobs=1) with selected features for pickling
+Re-fitted RFECV(cv=<generator object BaseCrossValidator.split at 0x14c332199e70>,
+      estimator=RandomForestClassifier(n_jobs=1), n_jobs=4, step=700) pickled to ./models/2022-11-29_multiclass_rf_rfecv.pkl
+##########################
+
+
+
+Report generation complete at 2022-11-29 09:13:51.454641.
+Report generation took 0:06:52.942507

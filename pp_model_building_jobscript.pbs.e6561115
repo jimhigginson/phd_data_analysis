@@ -1,0 +1,2 @@
+/rds/general/user/jah119/home/anaconda3/envs/test/lib/python3.10/site-packages/pandas/core/arraylike.py:397: RuntimeWarning: divide by zero encountered in log2
+  result = getattr(ufunc, method)(*inputs, **kwargs)

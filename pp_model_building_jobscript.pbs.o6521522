@@ -1,0 +1,32 @@
+Importing data from ./data/combined_data_metadata.csv
+Data successfully imported
+
+Starting data analysis
+Generating report
+Initialising PCA plotting object
+Starting univariate analysis
+Starting univariate and unsupervised analysis
+Plotting volcano plot
+Collating data for volcano plot
+Calculating log2 fold change
+Correcting for false discovery rate using Benjamini-Hochberg correction
+Performing independent t-test for each feature, comparing tumour with normal
+Saving to ./figures/2022-11-22_volcano_plot.pdf
+Plotting scree plot for first 10 principal components.
+Saving scree plot to ./figures/2022-11-22_scree.pdf.
+Plotting binary PCA plot
+Saving binary PCA plot to ./figures/2022-11-22_binary_pc_plot.pdf
+Plotting datewise PCA plot
+Saving date PCA plot to ./figures/2022-11-22_date_pc_plot.pdf
+Plotting multiclass PCA plot
+Saving pathology PCA plot to ./figures/2022-11-22_pathology_pc_plot.pdf
+Plotting energy device PCA plot
+Saving energy device PCA plot to ./figures/2022-11-22_energy_pc_plot.pdf
+Holder text that will eventually verbose the plot creation
+Univariate and unsupervised analysis complete
+Starting multivariate model generation
+Instantiating model builder class
+Initialising supervised analysis class
+Importing data object
+Building all models with recursive feature elimination with 200 features eliminated at a time, and 3 n_jobs for multithreading
+Instantiating LDA model and RFECV selector at 1669109936.3488965 for the binary model
