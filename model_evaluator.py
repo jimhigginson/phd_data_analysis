@@ -8,6 +8,7 @@ from pp_data_import import data
 from ms_data_class import PeakPickedData
 from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
 import matplotlib.pyplot as plt
+import pandas as pd
 from thesis_figure_parameters import tfParams
 
 today = date.today()
@@ -39,6 +40,10 @@ binary_rf = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[1]}.pk
 multiclass_lda = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[2]}.pkl','rb'))
 multiclass_rf = pickle.load(open(f'{model_path}{date_to_analyse}_{model_stems[3]}.pkl','rb'))
 
+binary_lda_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[0]}.csv', usecols=[1], dtype='str')
+binary_rf_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[1]}.csv', usecols=[1], dtype='str')
+multiclass_lda_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[2]}.csv', usecols=[1], dtype='str')
+multiclass_rf_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[3]}.csv', usecols=[1], dtype='str')
 
 models = [
 binary_lda,
@@ -47,6 +52,7 @@ multiclass_lda,
 multiclass_rf
 ]
 
+test_binary_lda = 'foo'
 '''
 
 ######################
@@ -126,4 +132,6 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
 
 
 test = ModelEvaluator(models[0], data.data, data.binary_path)
+test2 = ModelEvaluator(models[1], data.data, data.binary_path)
 icle = ModelEvaluator(models[2], data.data, data.path)
+icle2 = ModelEvaluator(models[3], data.data, data.path)
