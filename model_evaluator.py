@@ -45,6 +45,11 @@ binary_rf_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[1]
 multiclass_lda_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[2]}.csv', usecols=[1], dtype='str')
 multiclass_rf_features = pd.read_csv(f'{model_path}{date_to_analyse}_{model_stems[3]}.csv', usecols=[1], dtype='str')
 
+binary_lda_features = binary_lda_features['0']
+binary_rf_features = binary_rf_features['0']
+multiclass_lda_features =  multiclass_lda_features['0']
+multiclass_rf_features = multiclass_rf_features['0']
+
 models = [
 binary_lda,
 binary_rf,
@@ -52,9 +57,21 @@ multiclass_lda,
 multiclass_rf
 ]
 
-test_binary_lda = 'foo'
-'''
+features = [
+binary_lda_features,
+binary_rf_features,
+multiclass_lda_features,
+multiclass_rf_features
+]
 
+models[0].fit(data.data[features[0]], data.binary_path)
+
+models[1].fit(data.data[features[1]], data.binary_path)
+models[2].fit(data.data[features[2]], data.path)
+models[3].fit(data.data[features[3]], data.path)
+
+
+'''
 ######################
 # Report starts here #
 ######################
@@ -131,7 +148,7 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
 
 
 
-test = ModelEvaluator(models[0], data.data, data.binary_path)
-test2 = ModelEvaluator(models[1], data.data, data.binary_path)
-icle = ModelEvaluator(models[2], data.data, data.path)
-icle2 = ModelEvaluator(models[3], data.data, data.path)
+test = ModelEvaluator(models[0], data.data[features[0]], data.binary_path)
+test2 = ModelEvaluator(models[1], data.data[features[1]], data.binary_path)
+icle = ModelEvaluator(models[2], data.data[features[2]], data.path)
+icle2 = ModelEvaluator(models[3], data.data[features[3]], data.path)
