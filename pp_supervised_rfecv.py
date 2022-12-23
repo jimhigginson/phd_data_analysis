@@ -3,7 +3,7 @@ from sklearn.feature_selection import RFECV
 from sklearn.model_selection import LeaveOneGroupOut
 from sklearn.ensemble import RandomForestClassifier
 
-from time import time
+from datetime import date, datetime
 
 class PeakPickModelBuilder():
     
@@ -31,7 +31,7 @@ class PeakPickModelBuilder():
 
     @property
     def binary_lda(self):
-        start_time = time()
+        start_time = datetime.now()
         X = self.data
         y = self.binary_path
         print(f'Instantiating LDA model and RFECV selector at {start_time} for the binary model')
@@ -46,14 +46,14 @@ class PeakPickModelBuilder():
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
-        end_time = time()
+        end_time = datetime.now()
         print(f'Completing run at {end_time}.')
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
 
     @property
     def multiclass_lda(self):
-        start_time = time()
+        start_time = datetime.now()
         X = self.data
         y = self.path
         print(f'Instantiating LDA model and RFECV selector at {start_time} for the multiclass model')
@@ -68,14 +68,14 @@ class PeakPickModelBuilder():
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
-        end_time = time()
+        end_time = datetime.now()
         print(f'Completing run at {end_time}.')
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
 
     @property
     def binary_rf(self):
-        start_time = time()
+        start_time = datetime.now()
         X = self.data
         y = self.binary_path
         print(f'Instantiating random forest model and RFECV selector at {start_time} for the binary model')
@@ -90,18 +90,17 @@ class PeakPickModelBuilder():
                 cv = self.logocv.split(X, y, groups=self.patient_number),
                 n_jobs = self.n_jobs, # change to 8 in RCS cluster
                 verbose = self.verbosity,
-                # verbose = 1,
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
-        end_time = time()
+        end_time = datetime.now()
         print(f'Completing run at {end_time}.')
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
 
     @property
     def multiclass_rf(self):
-        start_time = time()
+        start_time = datetime.now()
         X = self.data
         y = self.path
         print(f'Instantiating Random Forest model and RFECV selector at {start_time} for the multiclass model')
@@ -119,7 +118,7 @@ class PeakPickModelBuilder():
                 scoring = None # add in a scoring estimator
                 )
         feature_selector.fit(X, y)
-        end_time = time()
+        end_time = datetime.now()
         print(f'Completing run at {end_time}.')
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
