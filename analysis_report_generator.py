@@ -6,10 +6,28 @@ from pp_supervised_rfecv import PeakPickModelBuilder
 import pickle
 import pandas as pd
 from datetime import datetime, date
+import matplotlib.pyplot as plt
 
 report_start = datetime.today()
 today = date.today()
 model_path = './models/'
+figure_path = './figures/'
+
+
+def rfecv_plotter(rfecv, filepath):
+    n_scores = len(rfecv.cv_results_["mean_test_score"])
+    plt.figure()
+    plt.xlabel("Number of features selected")
+    plt.ylabel("Mean test accuracy")
+    plt.errorbar(
+        range(min_features_to_select, n_scores + min_features_to_select),
+        rfecv.cv_results_["mean_test_score"],
+        yerr=rfecv.cv_results_["std_test_score"],
+    )
+    plt.title(f"Recursive Feature Elimination \nwith correlated features")
+    plt.subtitle(f'Using {rfecv.estimator}, \n Classes {rfecv.classes_}.') 
+    plt.show()
+    plt.savefig(
 
 print('Starting data analysis')
 print('Generating report')
