@@ -122,5 +122,3 @@ class PeakPickModelBuilder():
         print(f'Completing run at {end_time}.')
         print(f'Feature selection took {end_time - start_time} seconds.')
         return(feature_selector)
-
-
