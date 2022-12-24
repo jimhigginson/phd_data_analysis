@@ -16,18 +16,24 @@ figure_path = './figures/'
 
 def rfecv_plotter(rfecv, filepath):
     n_scores = len(rfecv.cv_results_["mean_test_score"])
+    print(f'Creating rfecv figure')
     plt.figure()
     plt.xlabel("Number of features selected")
     plt.ylabel("Mean test accuracy")
     plt.errorbar(
-        range(min_features_to_select, n_scores + min_features_to_select),
+        range(rfecv.min_features_to_select, n_scores + rfecv.min_features_to_select),
         rfecv.cv_results_["mean_test_score"],
         yerr=rfecv.cv_results_["std_test_score"],
     )
     plt.title(f"Recursive Feature Elimination \nwith correlated features")
     plt.subtitle(f'Using {rfecv.estimator}, \n Classes {rfecv.classes_}.') 
+    #########
+    # delete once working
     plt.show()
-    plt.savefig(
+    ########
+    print('Saving rfecv figure')
+    plt.savefig(f'{figure_path}_{filepath}.pdf')
+    print('rfecv figure saved')
 
 print('Starting data analysis')
 print('Generating report')
@@ -62,7 +68,18 @@ multiclass_lda = modeller.multiclass_lda
 binary_rf = modeller.binary_rf
 multiclass_rf = modeller.multiclass_rf
 '''
+test_path = f'{today}_binary_lda_rfecv'
 
+########## 
+# Delete hashed section and add to key, value iterator below for all 4 models
+##########
+
+print('testing rfecv plotter')
+rfecv_plotter(binary_lda, test_path)
+
+print('here is the dictionary that will probably break this')
+
+##########
 filenames = {
     binary_lda : f'{today}_binary_lda_rfecv',
     multiclass_lda : f'{today}_multiclass_lda_rfecv',
