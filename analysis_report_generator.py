@@ -25,8 +25,7 @@ def rfecv_plotter(rfecv, filepath):
         rfecv.cv_results_["mean_test_score"],
         yerr=rfecv.cv_results_["std_test_score"],
     )
-    plt.title(f"Recursive Feature Elimination \nwith correlated features")
-    plt.subtitle(f'Using {rfecv.estimator}, \n Classes {rfecv.classes_}.') 
+    plt.title(f"Recursive Feature Elimination \nwith correlated features\nUsing {rfecv.estimator}, \n Classes {rfecv.classes_}.") 
     #########
     # delete once working
     plt.show()
@@ -63,23 +62,11 @@ print('Instantiating model builder class')
 modeller = PeakPickModelBuilder(data)
 
 binary_lda = modeller.binary_lda
-'''
 multiclass_lda = modeller.multiclass_lda
 binary_rf = modeller.binary_rf
 multiclass_rf = modeller.multiclass_rf
-'''
-test_path = f'{today}_binary_lda_rfecv'
 
-########## 
-# Delete hashed section and add to key, value iterator below for all 4 models
-##########
 
-print('testing rfecv plotter')
-rfecv_plotter(binary_lda, test_path)
-
-print('here is the dictionary that will probably break this')
-
-##########
 filenames = {
     binary_lda : f'{today}_binary_lda_rfecv',
     multiclass_lda : f'{today}_multiclass_lda_rfecv',
@@ -88,6 +75,13 @@ filenames = {
         }
 
 for key, value in filenames.items():
+    print('##########################')
+    print(f'Preparing RFECV optimisation graph for {value}')
+    print('##########################')
+    rfecv_plotter(key, value)
+    print('##########################')
+    print(f'Plotting for {value} complete')
+    print('##########################')
     filepath = f'{model_path}{value}.pkl'
     print('##########################')
     print(f'Opening {filepath} for pickling')
@@ -103,7 +97,7 @@ for key, value in filenames.items():
     else:
         y = data.path
     print(f'Fitting {key.estimator} with selected features for pickling')
-    model = key.estimator.fit(data.log_transform_data[key.get_support], y)
+    model = key.estimator.fit(data.log_transform_data[key.get_support()], y)
     pickle.dump(model, file)
     print(f'Re-fitted {key} pickled to {filepath}')
     file.close()
