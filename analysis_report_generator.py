@@ -25,13 +25,9 @@ def rfecv_plotter(rfecv, filepath):
         rfecv.cv_results_["mean_test_score"],
         yerr=rfecv.cv_results_["std_test_score"],
     )
-    plt.title(f"Recursive Feature Elimination \nwith correlated features\nUsing {rfecv.estimator}, \n Classes {rfecv.classes_}.") 
-    #########
-    # delete once working
-    plt.show()
-    ########
+    plt.title(f"Model performance with Recursive Feature Elimination and LOOCV.\n{rfecv.estimator}, Classes {rfecv.classes_}.") 
     print('Saving rfecv figure')
-    plt.savefig(f'{figure_path}_{filepath}.pdf')
+    plt.savefig(f'{figure_path}{filepath}.pdf')
     print('rfecv figure saved')
 
 print('Starting data analysis')
