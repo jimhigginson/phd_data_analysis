@@ -83,9 +83,9 @@ for key, value in filenames.items():
     print(f'Opening {filepath} for pickling')
     file = open(filepath, 'wb')
     print('##########################')
-    print(f'RFECV model for {key} had {key.n_features_} features')
-    print(f'Exporting features for {key}')
-    features = pd.DataFrame(key.get_feature_names_out())
+    print(f'RFECV model for {key} reduced {key.n_features_in_} features to {key.n_features_} features.')
+    print(f'Exporting the reduced feature dataframe for {key}')
+    features = pd.DataFrame(key.transform(data.log_transform_data), columns=key.get_feature_names_out())
     features.to_csv(f'{model_path}{value}.csv')
     print('Evaluating whether model was binary or multiclass for fitting with correct targets')
     if len(key.classes_) == 2:
@@ -93,7 +93,8 @@ for key, value in filenames.items():
     else:
         y = data.path
     print(f'Fitting {key.estimator} with selected features for pickling')
-    model = key.estimator.fit(data.log_transform_data[key.get_support()], y)
+    model = key.estimator.fit(features, y)
+    #Creates a new 'simple' model of the estimator used, and fits the appropriate data to it.
     pickle.dump(model, file)
     print(f'Re-fitted {key} pickled to {filepath}')
     file.close()
