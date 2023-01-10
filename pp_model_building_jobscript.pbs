@@ -1,4 +1,4 @@
-#PBS -lwalltime=24:00:00
+#PBS -lwalltime=36:00:00
 #PBS -lselect=1:ncpus=256:mem=128gb
 # resources here
 

@@ -16,7 +16,7 @@ class PeakPickModelBuilder():
     logocv = LeaveOneGroupOut()
     scoring = None #or accuracy or roc_auc
     n_jobs = 8 # for multi-threading the rfecv.
-    verbosity = 1
+    verbosity = 0
 
     def __init__(self, data_object):
         print('Initialising supervised analysis class')
