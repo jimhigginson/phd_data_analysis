@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import minmax_scale
 
+data_filepath = 'data/2023-01-05_in-vivo_binned_data'
 print('Importing data')
-data = pd.read_csv('data/2023-01-05_in-vivo_binned_data.csv', index_col=0)
+data = pd.read_csv(f'{data_filepath}.csv', index_col=0)
 print('Data import complete')
 
 # This is the raw binned data. 
@@ -23,4 +24,6 @@ data = pd.DataFrame(minmax_scale(data, axis=1), columns = data.columns)
 
 print('Min max scale complete')
 
-data.to_csv('data/2023-01-05_in_vivo_binned_medlogscale.csv', index=False)
+data.to_csv(f'{data_filepath}_medlogscale.csv', index=False)
+print('Data saved successfully')
+print(f'Data dimensions was {data.shape}')
