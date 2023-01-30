@@ -12,11 +12,11 @@ class PeakPickModelBuilder():
 
     '''
     # class variables here
-    features_step = 1 # reduce to 1 for final rfecv
+    features_step = 5000 # reduce to 1 for final rfecv
     logocv = LeaveOneGroupOut()
     scoring = None #or accuracy or roc_auc
     n_jobs = 8 # for multi-threading the rfecv.
-    verbosity = 0
+    verbosity = 1
 
     def __init__(self, data_object):
         print('Initialising supervised analysis class')
