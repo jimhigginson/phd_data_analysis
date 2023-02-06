@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import minmax_scale
 
 class PeakPickedData(PCA):
     '''
@@ -107,7 +108,7 @@ class PeakPickedData(PCA):
         '''
         self.logOS = np.nanmedian(self.data[self.data!=0])
         # creates a median of the raw data, minus the 0 data. LogOS is what Yuchen called it, not sure what it stands for
-        log_transform_data = np.log(self.data + self.logOS)
+        log_transform_data = pd.DataFrame(minmax_scale(np.log(self.data + self.logOS), axis=1), columns = self.data.columns)
         return(log_transform_data)
 
     @property
