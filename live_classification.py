@@ -34,3 +34,33 @@ print(f'Loading live metadata from {live_metadata}.')
 metadata = pd.read_csv(live_metadata)
 
 print(f'{live_metadata} successfully loaded.')
+
+# Here use model.features_in_ to create a mask for live_data so the model only sees the relevant features
+
+# doing this at this early stage should also reduce the comuptational overhead for later stages
+
+print('Removing trailing \'000\' from data column headers to match with model features')
+data.columns = data.columns.str.rstrip('000')
+print('Trailing zeros successfully removed')
+
+print('Subsetting data to only those features selected in the RFECV process of model building')
+data = data[model.feature_names_in_]
+print('Data subsetting complete')
+
+
+# Now I need to either group by file and then apply a cutoff, or vice versa. 
+# I'll do the simplest first and do a universal cutoff so at least I have the code for it laid out
+
+cutoff = 1e6
+
+print(f'Filtering metadata by raw Total Ion Count, to only include those scans over the cutoff of {cutoff}')
+burns = metadata[metadata['Sum.'] > cutoff]
+print('Burn identification complete')
+
+print('Matching data to burns identified from metadata')
+burns_data = data[data.index.isin(burns.index)]
+print('Data -> metadata matching complete')
+
+print('Grouping metadata by filename and collating in a dict, accessible by the key of the relevant filename')
+grouped_burns = dict(tuple(burns.groupby('File')))
+print('Grouping and collation complete")
