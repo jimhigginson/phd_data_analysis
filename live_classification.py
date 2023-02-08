@@ -10,8 +10,8 @@ live_metadata = './data/2023-01-05_in-vivo_binned_metadata.csv'
 
 # unpickle the model
 
+'''
 mask_data = pd.read_csv(f'{model_path}.csv')
-
 
 print(f'Unpickling model {model_path}.')
 
@@ -20,7 +20,7 @@ model = pickle.load(open(f'{model_path}.pkl','rb'))
 print(f'Model {model_path} successfully unpickled.')
 
 # load data
-
+'''
 print(f'Loading live data from {live_data}.')
 
 data = pd.read_csv(live_data)
