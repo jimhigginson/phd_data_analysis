@@ -74,6 +74,7 @@ multiclass_lda = modeller.multiclass_lda
 binary_rf = modeller.binary_rf
 multiclass_rf = modeller.multiclass_rf
 
+array_index = int(os.environ['PBS_ARRAY_INDEX'])
 
 filenames = {
     binary_lda : f'{today}_binary_lda_rfecv',
@@ -83,35 +84,37 @@ filenames = {
         }
 
 for key, value in filenames.items():
-    print('##########################')
-    print(f'Preparing RFECV optimisation graph for {value}')
-    print('##########################')
-    rfecv_plotter(key, value)
-    print('##########################')
-    print(f'Plotting for {value} complete')
-    print('##########################')
-    filepath = f'{model_path}{value}.pkl'
-    print('##########################')
-    print(f'Opening {filepath} for pickling')
-    file = open(filepath, 'wb')
-    print('##########################')
-    print(f'RFECV model for {key} reduced {key.n_features_in_} features to {key.n_features_} features.')
-    print(f'Exporting the reduced feature dataframe for {key}')
-    features = pd.DataFrame(key.transform(data.log_transform_data), columns=key.get_feature_names_out())
-    features.to_csv(f'{model_path}{value}.csv')
-    print('Evaluating whether model was binary or multiclass for fitting with correct targets')
-    if len(key.classes_) == 2:
-        y = data.binary_path
-    else:
-        y = data.path
-    print(f'Fitting {key.estimator} with selected features for pickling')
-    model = key.estimator.fit(features, y)
-    #Creates a new 'simple' model of the estimator used, and fits the appropriate data to it.
-    pickle.dump(model, file)
-    print(f'Re-fitted {key} pickled to {filepath}')
-    file.close()
-    print('##########################')
-    print('\n\n')
+    counter += 1
+    if counter == array_index:
+        print('##########################')
+        print(f'Preparing RFECV optimisation graph for {value}')
+        print('##########################')
+        rfecv_plotter(key, value)
+        print('##########################')
+        print(f'Plotting for {value} complete')
+        print('##########################')
+        filepath = f'{model_path}{value}.pkl'
+        print('##########################')
+        print(f'Opening {filepath} for pickling')
+        file = open(filepath, 'wb')
+        print('##########################')
+        print(f'RFECV model for {key} reduced {key.n_features_in_} features to {key.n_features_} features.')
+        print(f'Exporting the reduced feature dataframe for {key}')
+        features = pd.DataFrame(key.transform(data.log_transform_data), columns=key.get_feature_names_out())
+        features.to_csv(f'{model_path}{value}.csv')
+        print('Evaluating whether model was binary or multiclass for fitting with correct targets')
+        if len(key.classes_) == 2:
+            y = data.binary_path
+        else:
+            y = data.path
+        print(f'Fitting {key.estimator} with selected features for pickling')
+        model = key.estimator.fit(features, y)
+        #Creates a new 'simple' model of the estimator used, and fits the appropriate data to it.
+        pickle.dump(model, file)
+        print(f'Re-fitted {key} pickled to {filepath}')
+        file.close()
+        print('##########################')
+        print('\n\n')
 
 
 
