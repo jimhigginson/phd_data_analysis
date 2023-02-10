@@ -29,7 +29,7 @@ def chromatogram_plotter(file, data):
         data = data
         )
     plt.title(file)
-    plt.savefig(f'{fig_path}chromatogram_{file}.eps')
+    plt.savefig(f'{fig_path}chromatogram_{file}.pdf')
 
 for key, value in grouped_burns.items():
     chromatogram_plotter(key, value)
