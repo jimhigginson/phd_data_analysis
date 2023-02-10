@@ -51,7 +51,7 @@ print('Data subsetting complete')
 # Now I need to either group by file and then apply a cutoff, or vice versa. 
 # I'll do the simplest first and do a universal cutoff so at least I have the code for it laid out
 
-cutoff = 1e6
+cutoff = 1
 
 print(f'Filtering metadata by raw Total Ion Count, to only include those scans over the cutoff of {cutoff}')
 burns = metadata[metadata['Sum.'] > cutoff]
@@ -63,4 +63,4 @@ print('Data -> metadata matching complete')
 
 print('Grouping metadata by filename and collating in a dict, accessible by the key of the relevant filename')
 grouped_burns = dict(tuple(burns.groupby('File')))
-print('Grouping and collation complete")
+print('Grouping and collation complete')
