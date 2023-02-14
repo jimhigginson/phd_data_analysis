@@ -14,13 +14,14 @@ fig_path = './figures/'
 cutoff = 0.6e7
 
 def chromatogram_plotter(file, data):
-    plt.figure(figsize=(tfParams['textwidth'],3))
-    plt.plot(
+    fig, ax = plt.subplots(figsize=(tfParams['textwidth'],3))
+    ax.plot(
         'Start scan',
         'Sum.',
         data = data,
+        linewidth=0.1
         )
-    plt.fill_between(
+    ax.fill_between(
         x = data['Start scan'],
         y1 = data['Sum.'],
         y2 = cutoff,
@@ -28,8 +29,13 @@ def chromatogram_plotter(file, data):
         interpolate = True,
         data = data
         )
-    plt.title(file)
-    plt.savefig(f'{fig_path}chromatogram_{file}.pdf')
+    ax.spines[['top','right']].set_visible(False)
+    ax.set_title(file)
+    ax.set_xlabel('Time (s)')
+    ax.set_ylabel('Total Ion Count')
+    fig.tight_layout(),
+    fig.savefig(f'{fig_path}chromatogram_{file}.pdf')
+    fig.clf()
 
 for key, value in grouped_burns.items():
     chromatogram_plotter(key, value)
