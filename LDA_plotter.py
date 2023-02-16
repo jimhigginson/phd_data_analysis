@@ -7,7 +7,7 @@ from datetime import date, datetime
 
 print('Importing Scikit-Learn modules')
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.model_selection import LeaveOneGroupOut, train_test_split, cross_val_score
+from sklearn.model_selection import LeaveOneGroupOut, train_test_split, cross_val_score, StratifiedKFold
 from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay, RocCurveDisplay, auc
 
 print('Importing my own scripts and data modules')
@@ -87,6 +87,7 @@ X = data.log_transform_data
 y = data.binary_path
 
 logocv = LeaveOneGroupOut()
+cv = StratifiedKFold(n_splits=10)
 groups = data.raw_data.patient_number
 
 print('Instantiating LDA model')
@@ -123,13 +124,14 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 clf.fit(X_train, y_train)
 '''
-
+start = datetime.now()
+print(f'Starting Cross validated plotting at {start}')
 tprs = []
 aucs = []
 mean_fpr = np.linspace(0, 1, 100)
 
 fig, ax = plt.subplots(figsize=(6, 6))
-for fold, (train, test) in enumerate(logocv.split(X, y, groups=groups)):
+for fold, (train, test) in enumerate(cv.split(X, y)):
     print(f'Plotting fold {fold}')
     clf.fit(X.loc[train], y.loc[train])
     viz = RocCurveDisplay.from_estimator(
@@ -182,6 +184,9 @@ ax.set(
 ax.axis("square")
 ax.legend(loc="lower right")
 plt.show()
+plt.savefig(f'{fig_path}{today}_cv_lda_roc.pdf')
+end = datetime.now()
+print(f'Plotting complete at {end}, taking {end-start}')
 
 '''
 print('Plotting binary LDA model')
