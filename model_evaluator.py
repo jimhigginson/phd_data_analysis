@@ -63,14 +63,14 @@ binary_rf_features,
 multiclass_lda_features,
 multiclass_rf_features
 ]
-'''
 
 models[0].fit(data.data[features[0]], data.binary_path)
 
-models[1].fit(data.data[features[1]], data.binary_path)
+#models[1].fit(data.data[features[1]], data.binary_path)
 models[2].fit(data.data[features[2]], data.path)
-models[3].fit(data.data[features[3]], data.path)
+#models[3].fit(data.data[features[3]], data.path)
 
+'''
 
 ######################
 # Report starts here #
@@ -148,7 +148,7 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
 
 
 
-test = ModelEvaluator(models[0], data.data[features[0]], data.binary_path)
-test2 = ModelEvaluator(models[1], data.data[features[1]], data.binary_path)
-icle = ModelEvaluator(models[2], data.data[features[2]], data.path)
-icle2 = ModelEvaluator(models[3], data.data[features[3]], data.path)
+test = ModelEvaluator(models[0], data.log_transform_data[features[0]], data.binary_path)
+#test2 = ModelEvaluator(models[1], data.data[features[1]], data.binary_path)
+icle = ModelEvaluator(models[2], data.log_transform_data[features[2]], data.path)
+#icle2 = ModelEvaluator(models[3], data.data[features[3]], data.path)
