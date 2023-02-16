@@ -108,7 +108,7 @@ class PeakPickedData(PCA):
         '''
         self.logOS = np.nanmedian(self.data[self.data!=0])
         # creates a median of the raw data, minus the 0 data. LogOS is what Yuchen called it, not sure what it stands for
-        log_transform_data = pd.DataFrame(np.log(self.data + self.logOS), axis=1)
+        log_transform_data = pd.DataFrame(np.log(self.data + self.logOS))
         return(log_transform_data)
 
     @property
