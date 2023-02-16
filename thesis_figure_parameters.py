@@ -7,12 +7,12 @@ tfParams = {
     'textheight': 7.44 # as above
         }
 
-cat_colours = {
-        'Fat':'Yellow',
-        'Tumour':'Red',
-        'Muscle':'Brown',
-        'Mucosa':'Green',
-        'Dysplasia':'Pink',
-        'Connective tissue':'Blue',
-        'No tumour':'Green'
+catColours = {
+        'Fat':'yellow',
+        'Tumour':'red',
+        'Muscle':'saddlebrown',
+        'Mucosa':'forestgreen',
+        'Dysplasia':'hotpink',
+        'Connective tissue':'indigo',
+        'No tumour':'green'
         }
