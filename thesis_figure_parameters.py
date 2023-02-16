@@ -6,3 +6,13 @@ tfParams = {
     'textwidth': 5.17, #current textwidth (see thesis.pdf) is 13.123 cm / 5.17 inches
     'textheight': 7.44 # as above
         }
+
+cat_colours = {
+        'Fat':'Yellow',
+        'Tumour':'Red',
+        'Muscle':'Brown',
+        'Mucosa':'Green',
+        'Dysplasia':'Pink',
+        'Connective tissue':'Blue',
+        'No tumour':'Green'
+        }
