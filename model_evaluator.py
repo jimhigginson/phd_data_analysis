@@ -63,6 +63,7 @@ binary_rf_features,
 multiclass_lda_features,
 multiclass_rf_features
 ]
+'''
 
 models[0].fit(data.data[features[0]], data.binary_path)
 
@@ -71,7 +72,6 @@ models[2].fit(data.data[features[2]], data.path)
 models[3].fit(data.data[features[3]], data.path)
 
 
-'''
 ######################
 # Report starts here #
 ######################
