@@ -89,6 +89,9 @@ y = data.binary_path
 logocv = LeaveOneGroupOut()
 cv = StratifiedKFold(n_splits=10)
 groups = data.raw_data.patient_number
+
+print('Instantiating LDA model')
+clf = LinearDiscriminantAnalysis()
 '''
 start=datetime.now()
 print(f'Starting generation of LOOCV learning curve at {start}')
@@ -126,16 +129,6 @@ print(f'Finished at {end}, taking {end-start}')
 
 print(f'Cross validation scores show mean of {np.mean(cv_score)}, standard deviation {np.std(cv_score)}')
 
-X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.40,
-        random_state=0
-        )
-
-clf.fit(X_train, y_train)
-'''
-'''
 start = datetime.now()
 print(f'Starting Cross validated plotting at {start}')
 tprs = []
@@ -241,8 +234,7 @@ plt.savefig(f'{fig_path}{today}_cv_lda_pr_curve.pdf')
 end = datetime.now()
 print(f'Plotting complete at {end}, taking {end-start}')
 
-print('Instantiating LDA model')
-clf = LinearDiscriminantAnalysis()
+'''
 print('Fitting model to binary target')
 clf.fit(X, y)
 X2 = clf.transform(X)
@@ -256,7 +248,6 @@ print('Plotting complete')
 
 
 
-'''
 print('Refitting LDA with multiclass target')
 y2 = data.path
 clf.fit(X, y2)
