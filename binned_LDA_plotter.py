@@ -71,6 +71,7 @@ def bin_lda_plotter(data):
         ax.scatter(
             group[0],
             group[0],
+            alpha = 0.6,
             label = x,
             color = colours[x]
             )
