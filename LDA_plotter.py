@@ -7,7 +7,7 @@ from datetime import date, datetime
 
 print('Importing Scikit-Learn modules')
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.model_selection import LeaveOneGroupOut, train_test_split, cross_val_score, StratifiedKFold
+from sklearn.model_selection import LeaveOneGroupOut, train_test_split, cross_val_score, StratifiedKFold, LearningCurveDisplay
 from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay, RocCurveDisplay, auc
 
 print('Importing my own scripts and data modules')
@@ -97,10 +97,29 @@ clf.fit(X, y)
 X2 = clf.transform(X)
 bin_lda_data = pd.DataFrame(X2)
 bin_lda_data['Class'] = y
-
-
-
 '''
+start=datetime.now()
+print(f'Starting generation of LOOCV learning curve at {start}')
+
+fig, ax = plt.subplots(figsize=(tfParams['textwidth'],tfParams['textwidth']))
+LearningCurveDisplay.from_estimator(
+        clf,
+        X,
+        y,
+        cv=logocv,
+        groups=groups,
+        score_type='both',
+        train_sizes=np.linspace(0.03, 1.0, 40),
+        n_jobs=4,
+        verbose=1,
+        ax=ax
+        )
+ax.set_title(f'Learning Curve for binary {clf}')
+plt.show()
+plt.savefig(f'{fig_path}{today}_binary_lda_logocv_learning_curve.pdf')
+end=datetime.now()
+print(f'Learning curve complete at {end}, taking {end-start}')
+
 start=datetime.now()
 print(f'Now performing Leave-one-out cross validation with {len(groups.unique())} iterations, starting at {start}')
 cv_score = cross_val_score(
@@ -123,6 +142,7 @@ X_train, X_test, y_train, y_test = train_test_split(
         )
 
 clf.fit(X_train, y_train)
+'''
 '''
 start = datetime.now()
 print(f'Starting Cross validated plotting at {start}')
@@ -189,11 +209,49 @@ end = datetime.now()
 print(f'Plotting complete at {end}, taking {end-start}')
 
 '''
+
+start = datetime.now()
+print(f'Starting Cross validated precision recall plotting at {start}')
+prc = []
+av_prc= []
+mean_recall = np.linspace(0, 1, 100)
+
+fig, ax = plt.subplots(figsize=(6, 6))
+for fold, (train, test) in enumerate(cv.split(X, y)):
+    print(f'Plotting fold {fold}')
+    clf.fit(X.loc[train], y.loc[train])
+    viz = PrecisionRecallDisplay.from_estimator(
+        clf,
+        X.loc[test],
+        y.loc[test],
+        name=f"PR {fold}",
+        alpha=0.8,
+        lw=1,
+        ax=ax,
+    )
+    interp_prc = np.interp(mean_recall, viz.recall, viz.precision)
+    interp_prc[0] = 0.0
+    prc.append(interp_prc)
+    av_prc.append(viz.average_precision)
+ax.set(
+    xlabel="Recall",
+    ylabel="Precision",
+    title=f"Precision Recall Curves (10-fold cross-validation)",
+)
+ax.set_xlim(xmin=-0.05, xmax=1.05)
+ax.set_ylim(ymin=-0.05, ymax=1.05)
+#ax.axis("square")
+ax.spines[['right', 'top']].set_visible(False)
+ax.legend(loc="lower left", fontsize='small')
+#plt.show()
+plt.savefig(f'{fig_path}{today}_cv_lda_pr_curve.pdf')
+end = datetime.now()
+print(f'Plotting complete at {end}, taking {end-start}')
+
 print('Plotting binary LDA model')
 bin_lda_plotter(bin_lda_data)
 # now doing similar but with just the binary model
 print('Plotting complete')
-'''
 
 
 
