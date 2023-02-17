@@ -85,7 +85,8 @@ print('Importing and organising data')
 data = BinnedData(data)
 
 X = data.log_transform_data
-y = data.binary_path
+y = data.binary_path.reset_index(drop=True)
+#Reset the index as dropping a few samples with their indices threw off a couple of the estimators
 
 logocv = LeaveOneGroupOut()
 cv = StratifiedKFold(n_splits=10)
@@ -112,7 +113,7 @@ LearningCurveDisplay.from_estimator(
         )
 ax.set_title(f'Learning Curve for binary {clf}')
 plt.show()
-plt.savefig(f'{fig_path}{today}_binary_lda_logocv_learning_curve.pdf')
+plt.savefig(f'{fig_path}{today}_binned_binary_lda_logocv_learning_curve.pdf')
 end=datetime.now()
 print(f'Learning curve complete at {end}, taking {end-start}')
 
@@ -127,9 +128,9 @@ cv_score = cross_val_score(
         )
 end=datetime.now()
 print(f'Finished at {end}, taking {end-start}')
-
 print(f'Cross validation scores show mean of {np.mean(cv_score)}, standard deviation {np.std(cv_score)}')
 
+'''
 start = datetime.now()
 print(f'Starting Cross validated plotting at {start}')
 tprs = []
@@ -190,13 +191,11 @@ ax.set(
 ax.axis("square")
 ax.legend(loc="lower right")
 plt.show()
-plt.savefig(f'{fig_path}{today}_cv_lda_roc.pdf')
+plt.savefig(f'{fig_path}{today}_binned_cv_lda_roc.pdf')
 end = datetime.now()
 print(f'Plotting complete at {end}, taking {end-start}')
 
-'''
 
-'''
 start = datetime.now()
 print(f'Starting Cross validated precision recall plotting at {start}')
 prc = []
@@ -231,11 +230,10 @@ ax.set_ylim(ymin=-0.05, ymax=1.05)
 ax.spines[['right', 'top']].set_visible(False)
 ax.legend(loc="lower left", fontsize='small')
 #plt.show()
-plt.savefig(f'{fig_path}{today}_cv_lda_pr_curve.pdf')
+plt.savefig(f'{fig_path}{today}_binned_cv_lda_pr_curve.pdf')
 end = datetime.now()
 print(f'Plotting complete at {end}, taking {end-start}')
 
-'''
 print('Fitting model to binary target')
 clf.fit(X, y)
 X2 = clf.transform(X)
