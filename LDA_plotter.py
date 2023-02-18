@@ -94,10 +94,13 @@ print('Instantiating LDA model')
 clf = LinearDiscriminantAnalysis()
 print('Fitting model to binary target')
 clf.fit(X, y)
+
+
+'''
 X2 = clf.transform(X)
 bin_lda_data = pd.DataFrame(X2)
 bin_lda_data['Class'] = y
-'''
+
 start=datetime.now()
 print(f'Starting generation of LOOCV learning curve at {start}')
 
@@ -208,7 +211,6 @@ plt.savefig(f'{fig_path}{today}_cv_lda_roc.pdf')
 end = datetime.now()
 print(f'Plotting complete at {end}, taking {end-start}')
 
-'''
 
 start = datetime.now()
 print(f'Starting Cross validated precision recall plotting at {start}')
@@ -255,7 +257,6 @@ print('Plotting complete')
 
 
 
-'''
 print('Refitting LDA with multiclass target')
 y2 = data.path
 clf.fit(X, y2)
