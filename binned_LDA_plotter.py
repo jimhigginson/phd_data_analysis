@@ -9,6 +9,8 @@ print('Importing Scikit-Learn modules')
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import LeaveOneGroupOut, train_test_split, cross_val_score, StratifiedKFold, LearningCurveDisplay
 from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay, RocCurveDisplay, auc
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.pipeline import Pipeline
 
 print('Importing my own scripts and data modules')
 from thesis_figure_parameters import catColours, tfParams
@@ -85,15 +87,19 @@ print('Importing and organising data')
 data = BinnedData(data)
 
 X = data.log_transform_data
-y = data.binary_path.reset_index(drop=True)
-#Reset the index as dropping a few samples with their indices threw off a couple of the estimators
+y = data.binary_path
 
 logocv = LeaveOneGroupOut()
 cv = StratifiedKFold(n_splits=10)
 groups = data.raw_data.patient_number
 
-print('Instantiating LDA model')
-clf = LinearDiscriminantAnalysis()
+print('Instantiating pipleline: MinMaxScaler --> LDA model to avoid data leakage in cross validation')
+
+clf = Pipeline([
+    ('Min-max scaler',MinMaxScaler()), 
+    ('LDA', LinearDiscriminantAnalysis())
+    ])
+
 '''
 start=datetime.now()
 print(f'Starting generation of LOOCV learning curve at {start}')
@@ -107,16 +113,15 @@ LearningCurveDisplay.from_estimator(
         groups=groups,
         score_type='both',
         train_sizes=np.linspace(0.03, 1.0, 40),
-        n_jobs=4,
-        verbose=1,
+        n_jobs=6,
+        verbose=2,
         ax=ax
         )
 ax.set_title(f'Learning Curve for binary {clf}')
-plt.show()
 plt.savefig(f'{fig_path}{today}_binned_binary_lda_logocv_learning_curve.pdf')
 end=datetime.now()
 print(f'Learning curve complete at {end}, taking {end-start}')
-
+'''
 start=datetime.now()
 print(f'Now performing Leave-one-out cross validation with {len(groups.unique())} iterations, starting at {start}')
 cv_score = cross_val_score(
@@ -124,12 +129,13 @@ cv_score = cross_val_score(
         X = X,
         y = y,
         groups = groups,
-        cv = logocv
+        cv = logocv,
+        n_jobs=4,
+        verbose=2
         )
 end=datetime.now()
 print(f'Finished at {end}, taking {end-start}')
 print(f'Cross validation scores show mean of {np.mean(cv_score)}, standard deviation {np.std(cv_score)}')
-
 '''
 start = datetime.now()
 print(f'Starting Cross validated plotting at {start}')
@@ -259,3 +265,4 @@ print('Plotting multiclass LDA model in 2D and 3D')
 lda_2d_plotter(multi_lda_data)
 lda_3d_plotter(multi_lda_data)
 print('Plotting complete')
+'''

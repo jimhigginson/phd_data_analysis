@@ -12,9 +12,10 @@ data = pd.read_csv(data_path)
 print('Dropping equivocal or missing samples')
 
 data = data[~data.path.isin(['Equivocal','No sample'])]
-
 print('Correcting "No tumour" to "Mucosa"')
 
 data.loc[data.path == 'No tumour', 'path'] = 'Mucosa'
 
+print('Resetting index after dropping samples')
+data= data.reset_index(drop=True)
 print(f'Binned data successfully imported\n')
