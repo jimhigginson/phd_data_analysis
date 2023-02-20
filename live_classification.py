@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from thesis_figure_parameters import tfParams
 
+'''
 # import the model and data to use
 model_path = './models/2023-02-06_binary_lda_rfecv'
 live_data = './data/2023-01-05_in-vivo_binned_data_medlogscale.csv'
@@ -51,11 +52,29 @@ print('Data subsetting complete')
 print('Performing diagnostic predictions')
 metadata = metadata.assign(prediction = model.predict(data))
 print('Diagnostic classifications completed')
-                           
-# Now I need to either group by file and then apply a cutoff, or vice versa. 
-# I'll do the simplest first and do a universal cutoff so at least I have the code for it laid out
-
-cutoff = 0.6e7
+'''                           
+# worked out hn010 cutoff as 6.45e6. Have set the others as this until determined otherwise
+cutoffs = {
+        '2021_01_07_HN001_S1.raw':6.05e6,
+        '2021_01_07_HN001_S2.raw':4.00e6,
+        '2021_01_21_HN002_S1.raw':4.10e6,
+        '2021_01_21_HN002_S2.raw':3.20e6,
+        '2021_01_21_HN003_S1.raw':2.45e6,
+        '2021_02_18_HN004_S1.raw':3.10e6,
+        '2021_02_23_HN005_S1.raw':6.60e6,
+        '2021_02_23_HN005_S2.raw':3.75e6,
+        '2021_03_18_HN006_S1.raw':2.35e6,
+        '2021_03_18_HN006_S2.raw':2.45e6,
+        '2021_04_15_HN007_S1.raw':1.45e7,
+        '2021_10_14_HN008.raw':7.80e6,
+        '2021_10_14_HN008_2.raw':6.45e6, # this is a dead file
+        '2021_11_11_HN009.raw':1.10e7,
+        '2021_11_25_HN010.raw':6.55e6,
+        '2022_01_20_HN011.raw':6.55e6,
+        '2022_01_20_HN011_2.raw':7.10e6,
+        '2022_06_30_HN012.raw':5.10e6,
+        '2022_06_30_HN012_2.raw':5.25e6
+        }
 '''
 print(f'Filtering metadata by raw Total Ion Count, to only include those scans over the cutoff of {cutoff}')
 burns = metadata[metadata['Sum.'] > cutoff]
@@ -69,45 +88,63 @@ case_metadata = dict(tuple(metadata.groupby('File')))
 print('Grouping and collation complete')
 
 '''
-alpha=0.2
-def live_classifier_plotter(data, alpha):
-    fig, ax = plt.subplots(figsize=(tfParams['textwidth'],3))
+alpha=0.6
+
+def live_classifier_plotter(metadata, filename):
+    data = metadata[metadata.File == filename]
+    cutoff = cutoffs[filename]
+    fig, ax = plt.subplots(figsize=(16,8))# this is what it ought to be for thesis inclusion as summary...#tfParams['textwidth'],3))
     ax.plot(
-        'Start scan',
-        'Sum.',
-        data = data,
-        linewidth=0.1
-        )
-    ax.fill_between(
-        x = data['Start scan'],
-        y1 = data['Sum.'],
-        y2 = cutoff,
-        where=(data['Sum.'] > cutoff),
-        interpolate = True,
-        data = data
-        )
+            'Start scan',
+            'Sum.',
+            data = data,
+            color='black',
+            label='_nolegend_',
+            linewidth=0.2
+            )
     ax.fill_between(
             x = data['Start scan'],
-            y1 = cutoff,
+            y1 = data['Sum.'],
+            y2 = cutoff,
             where=(data['Sum.'] > cutoff)&(data['prediction']=='No tumour'),
             interpolate=True,
             facecolor='green',
+            label='Prediction: no tumour',
             alpha=alpha
             )
     ax.fill_between(
             x = data['Start scan'],
-            y1 = cutoff,
+            y1 = data['Sum.'],
+            y2 = cutoff,
             where=(data['Sum.'] > cutoff)&(data['prediction']=='Tumour'),
             interpolate=True,
             facecolor='red',
+            label='Prediction: tumour',
             alpha=alpha
             )
     ax.spines[['top','right']].set_visible(False)
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('Total Ion Count')
-    fig.tight_layout(),
+    ax.axhline(y=cutoff, color='grey', alpha=0.2, label=f'Detection threshold ({cutoff:.2e})', linestyle='-')
+    ax.legend()
+    ax.set_title(f'Chromatogram & predictions for {filename}')
+    fig.tight_layout()
     fig.show()
 
-test = case_metadata['2021_11_25_HN010.raw']
 # when I come back to this, deal with first the variable errors, then find a way to do this programattically for all surgical cases, then work out how to deal with the different TIC cut off requierd for each case. SHould I choose it manually or programatically?
-live_classifier_plotter(test, alpha)
+
+
+
+
+
+def printable(metadata, filename):
+    '''
+    Takes a file, applies the cutoff and generates a printable so I can go through them and manually apply the ground truth from the videos.
+    '''
+    data = metadata[metadata.File == filename]
+    cutoff = cutoffs[filename]
+    data = data[data['Sum.'] > cutoff]
+    data = data.drop(['File','End scan','Class','prediction'], axis=1)
+    return(data)
+
+
