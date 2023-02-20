@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from thesis_figure_parameters import tfParams
 
-'''
 # import the model and data to use
 model_path = './models/2023-02-06_binary_lda_rfecv'
 live_data = './data/2023-01-05_in-vivo_binned_data_medlogscale.csv'
@@ -52,7 +51,7 @@ print('Data subsetting complete')
 print('Performing diagnostic predictions')
 metadata = metadata.assign(prediction = model.predict(data))
 print('Diagnostic classifications completed')
-'''                           
+
 # worked out hn010 cutoff as 6.45e6. Have set the others as this until determined otherwise
 cutoffs = {
         '2021_01_07_HN001_S1.raw':6.05e6,
@@ -76,9 +75,7 @@ cutoffs = {
         '2022_06_30_HN012_2.raw':5.25e6
         }
 '''
-print(f'Filtering metadata by raw Total Ion Count, to only include those scans over the cutoff of {cutoff}')
 burns = metadata[metadata['Sum.'] > cutoff]
-print('Burn identification complete')
 
 print('Matching data to burns identified from metadata')
 burns_data = data[data.index.isin(burns.index)]
@@ -142,9 +139,15 @@ def printable(metadata, filename):
     Takes a file, applies the cutoff and generates a printable so I can go through them and manually apply the ground truth from the videos.
     '''
     data = metadata[metadata.File == filename]
+    print(f'Filtering metadata by raw Total Ion Count, to only include those scans above the cutoff')
     cutoff = cutoffs[filename]
+    print(f'Burn identification complete using cutoff: {cutoff:.2e}')
     data = data[data['Sum.'] > cutoff]
     data = data.drop(['File','End scan','Class','prediction'], axis=1)
+    d = {'Start scan':('Start scan','first'), 'Sum.':('Sum.','sum'), 'burn length(s)':('Sum.','size')}
+    print('Sum consecutive groups to only show the first scan and length of the burn') 
+    data = data.groupby(data['Start scan'].diff().ne(1).cumsum()).agg(**d)
     return(data)
 
-
+for i in cutoffs.keys():
+     print(f'{i},\n {printable(metadata, i).to_markdown()}')
