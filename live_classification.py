@@ -150,4 +150,4 @@ def printable(metadata, filename):
     return(data)
 
 for i in cutoffs.keys():
-     print(f'{i},\n {printable(metadata, i).to_markdown()}')
+     print(f'{i},\n {printable(metadata, i).to_latex()}')
