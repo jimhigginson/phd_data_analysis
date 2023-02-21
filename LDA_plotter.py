@@ -270,3 +270,35 @@ lda_2d_plotter(multi_lda_data)
 lda_3d_plotter(multi_lda_data)
 print('Plotting complete')
 '''
+
+
+#####################
+# FEATURE ELIMINATION
+#####################
+
+print('Starting the section on feature elimination, attempting to remove redundant, uninfromative and correlated features to speed up the model without compromising classification performance')
+
+print('Creating correlation heatmap to visualise correlation in the data')
+print('++WARNING++ This takes a really long time')
+start = datetime.now()
+heat_map_path = f'{fig_path}{today}_pp_correlation_heatmap.png'
+print(f'Starting creating correlation matrix at {start}')
+corr_matrix = X.corr(method = 'spearman').abs()
+sns.set(font_scale = 1)
+print(f'Starting plot generation at {datetime.now()}')
+f, ax = plt.subplots(figsize=(7, 7))
+# Make heatmap
+sns.heatmap(corr_matrix, cmap= 'YlGnBu', square=True, ax = ax)
+f.tight_layout()
+# Save figure
+f.savefig(heat_map_path, dpi=500)
+end = datetime.now()
+print(f'Figure saved to {heat_map_path}, that took {end-start}')
+
+
+
+
+
+
+
+
