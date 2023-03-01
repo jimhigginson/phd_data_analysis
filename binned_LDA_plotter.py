@@ -29,18 +29,20 @@ print('Setting custom functions')
 def lda_2d_plotter(data):
     classes = data.Class.cat.categories
     data = data.groupby('Class')
-    plt.figure(figsize=(tfParams['textwidth'], tfParams['textwidth']))
+    plt.figure(figsize=(1.6*tfParams['textwidth'], 1.2*tfParams['textwidth']))
     axes = plt.axes()
     for x in classes:
         group = data.get_group(x)
         axes.scatter( 
-                       group[0],
-                       group[1],
-                       label = x,
-                       color = colours[x]
+                     group[0],
+                     group[1],
+                     label = x,
+                     color = colours[x],
+                     s = 12,
+                     alpha=0.9
                        )
     axes.spines[['right', 'top']].set_visible(False)
-    axes.legend()
+    axes.legend(markerscale=2, loc = 'upper right')
     plt.savefig(f'{fig_path}{today}_binned_2d_LDA.pdf')
 
 
@@ -66,7 +68,7 @@ def lda_3d_plotter(data):
 def bin_lda_plotter(data):
     classes = data.Class.cat.categories
     data = data.groupby('Class')
-    plt.figure(figsize=(tfParams['textwidth'], 3))
+    plt.figure(figsize=(5,5))
     ax = plt.axes()
     for x in classes:
         group = data.get_group(x)
@@ -77,13 +79,13 @@ def bin_lda_plotter(data):
             label = x,
             color = colours[x]
             )
-    ax.legend()
+    ax.legend(loc = 'upper right')
     ax.spines[['right', 'top']].set_visible(False)
     plt.savefig(f'{fig_path}{today}_binned_binary_lda_plot.pdf')
 
 print('Custom functions created')
 
-print('Importing and organising data')
+print(f'Importing and organising data at {datetime.now()}')
 data = BinnedData(data)
 
 X = data.log_transform_data
@@ -121,7 +123,7 @@ ax.set_title(f'Learning Curve for binary {clf}')
 plt.savefig(f'{fig_path}{today}_binned_binary_lda_logocv_learning_curve.pdf')
 end=datetime.now()
 print(f'Learning curve complete at {end}, taking {end-start}')
-'''
+
 start=datetime.now()
 print(f'Now performing Leave-one-out cross validation with {len(groups.unique())} iterations, starting at {start}')
 cv_score = cross_val_score(
@@ -136,7 +138,7 @@ cv_score = cross_val_score(
 end=datetime.now()
 print(f'Finished at {end}, taking {end-start}')
 print(f'Cross validation scores show mean of {np.mean(cv_score)}, standard deviation {np.std(cv_score)}')
-'''
+
 start = datetime.now()
 print(f'Starting Cross validated plotting at {start}')
 tprs = []
@@ -252,6 +254,7 @@ bin_lda_plotter(bin_lda_data)
 print('Plotting complete')
 
 
+'''
 
 print('Refitting LDA with multiclass target')
 y2 = data.path
@@ -263,6 +266,5 @@ multi_lda_data['Class'] = y2
 
 print('Plotting multiclass LDA model in 2D and 3D')
 lda_2d_plotter(multi_lda_data)
-lda_3d_plotter(multi_lda_data)
+#lda_3d_plotter(multi_lda_data)
 print('Plotting complete')
-'''
