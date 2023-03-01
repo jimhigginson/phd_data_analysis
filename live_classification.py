@@ -35,7 +35,6 @@ metadata = pd.read_csv(live_metadata)
 
 print(f'{live_metadata} successfully loaded.')
 
-
 # Here use model.features_in_ to create a mask for live_data so the model only sees the relevant features
 
 # doing this at this early stage should also reduce the comuptational overhead for later stages
@@ -51,6 +50,7 @@ print('Data subsetting complete')
 print('Performing diagnostic predictions')
 metadata = metadata.assign(prediction = model.predict(data))
 print('Diagnostic classifications completed')
+
 
 # worked out hn010 cutoff as 6.45e6. Have set the others as this until determined otherwise
 cutoffs = {
@@ -136,18 +136,43 @@ def live_classifier_plotter(metadata, filename):
 
 def printable(metadata, filename):
     '''
-    Takes a file, applies the cutoff and generates a printable so I can go through them and manually apply the ground truth from the videos.
+    Takes a file, applies the cutoff and groups burns based on having consecutive scan numbers above the cutoff. generates a printable so I can go through them and manually apply the ground truth from the videos.
     '''
     data = metadata[metadata.File == filename]
     print(f'Filtering metadata by raw Total Ion Count, to only include those scans above the cutoff')
     cutoff = cutoffs[filename]
     print(f'Burn identification complete using cutoff: {cutoff:.2e}')
     data = data[data['Sum.'] > cutoff]
-    data = data.drop(['File','End scan','Class','prediction'], axis=1)
-    d = {'Start scan':('Start scan','first'), 'Sum.':('Sum.','sum'), 'burn length(s)':('Sum.','size')}
+    data = data.drop(['File','End scan','Class'], axis=1)
+    d = {'Start scan':('Start scan','first'), 'Sum.':('Sum.','sum'), 'burn length(s)':('Sum.','size'), 'prediction':('prediction', lambda x:'Tumour' if 'Tumour' in x.values else 'No Tumour')}
     print('Sum consecutive groups to only show the first scan and length of the burn') 
     data = data.groupby(data['Start scan'].diff().ne(1).cumsum()).agg(**d)
     return(data)
 
+'''
 for i in cutoffs.keys():
      print(f'{i},\n {printable(metadata, i).to_latex()}')
+     '''
+
+def prediction_performance(metadata, filename):
+    '''
+    Takes a file, applies the cutoff and groups burns based on having consecutive scan numbers above the cutoff. imports and joins the (hand filled) ground truth so that y_pred can be compared with y_true, and returns the dataframe for performance analysis.
+    '''
+    data = metadata[metadata.File == filename]
+    print(f'Filtering metadata by raw Total Ion Count, to only include those scans above the cutoff')
+    cutoff = cutoffs[filename]
+    print(f'Burn identification complete using cutoff: {cutoff:.2e}')
+    data = data[data['Sum.'] > cutoff]
+    data = data.drop(['End scan','Class'], axis=1)
+    d = {'File':('File','first'),'Start scan':('Start scan','first'), 'Sum.':('Sum.','sum'), 'burn length(s)':('Sum.','size'), 'y_pred':('prediction', lambda x:'Tumour' if 'Tumour' in x.values else 'No tumour')}
+    print('Sum consecutive groups to only show the first scan and length of the burn')
+    data = data.groupby(data['Start scan'].diff().ne(1).cumsum()).agg(**d).reset_index(drop=True)
+    data = data.join(pd.read_csv(f'./data/ground_truth_{filename}.csv').y_true)
+
+    return(data)
+
+  # need to turn this into a class
+
+
+
+prediction_performance(metadata, '2021_11_25_HN010.raw')
