@@ -80,7 +80,9 @@ def bin_lda_plotter(data):
 
 print('Custom functions created')
 
-print('Importing and organising data')
+start = datetime.now()
+
+print(f'Importing and organising data at {start}')
 data = PeakPickedData(data)
 
 X = data.log_transform_data
@@ -89,6 +91,8 @@ y = data.binary_path
 logocv = LeaveOneGroupOut()
 cv = StratifiedKFold(n_splits=10)
 groups = data.raw_data.patient_number
+
+print(f'Data import and organisation complete at {datetime.now()}, that took {datetime.now() - start}')
 
 print('Instantiating LDA model')
 clf = LinearDiscriminantAnalysis()
