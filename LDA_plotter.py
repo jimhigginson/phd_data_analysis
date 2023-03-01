@@ -284,6 +284,8 @@ start = datetime.now()
 heat_map_path = f'{fig_path}{today}_pp_correlation_heatmap.png'
 print(f'Starting creating correlation matrix at {start}')
 corr_matrix = X.corr(method = 'spearman').abs()
+
+'''
 sns.set(font_scale = 1)
 print(f'Starting plot generation at {datetime.now()}')
 f, ax = plt.subplots(figsize=(7, 7))
@@ -294,6 +296,7 @@ f.tight_layout()
 f.savefig(heat_map_path, dpi=500)
 end = datetime.now()
 print(f'Figure saved to {heat_map_path}, that took {end-start}')
+'''
 
 
 
