@@ -40,7 +40,7 @@ clf.fit(X, y)
 
 # Import xy data (with appropriate alignment offset value)
 print("Loading Jinshi's time/position data")
-time = pd.read_excel('/Users/jim/Library/CloudStorage/Box-Box/PhD/iknife-data/in-vivo    -analysis/ex-vivo-model/data/griffin_tongue1_microrobot_position_data.xlsx')
+time = pd.read_excel('/Users/jim/Library/CloudStorage/Box-Box/PhD/iknife-data/in-vivo-analysis/ex-vivo-model/data/griffin_tongue1_microrobot_position_data.xlsx')
 
 # Import griffin data
 print('Importing raw binned griffin data')
