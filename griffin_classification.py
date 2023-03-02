@@ -82,12 +82,29 @@ print(f'TIC threshold for prediction set at {threshold:.2e}')
 g_metadata = pd.merge(g_metadata, interpolate, left_index=True, right_index=True, how='inner')
 g_metadata.loc[g_metadata['Sum.'] < threshold, 'prediction'] = 'No signal'
 
+colours.update({'No signal':'whitesmoke'})
+
 
 # Plot predictions on xy data
-print('')
+print('Will eventually do a static plot here')
+print('Setting x, y and hue values')
 
-# sense check this
-print('')
+x_pos = g_metadata['x-position']
+y_pos = g_metadata['y-position']
+
+print('Having a crack at animating')
+
+def animate(i):
+    plt.scatter(g_metadata.iloc[i]['x-position'], g_metadata.iloc[i]['y-position'], c=colours[g_metadata.iloc[i]['prediction']])
+    plt.xlim([0,10])
+    plt.ylim([0,10])
+    return(plt)
+
+fig = plt.figure()
+print('Creating and saving animation')
+ani = FuncAnimation(fig, animate)
+ani.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+
 
 # animate plot at 1hz
 
