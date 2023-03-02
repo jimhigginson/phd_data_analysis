@@ -28,7 +28,7 @@ colours = catColours
 print('Global variables set')
 
 # build model (min-maxxed)
-print('Instantiating model using MinMaxScaler and LDA in Pipline')
+print('Instantiating model using MinMaxScaler and LDA in Pipeline')
 clf = Pipeline([
     ('Min-max scaler',MinMaxScaler()),
     ('LDA', LinearDiscriminantAnalysis())
@@ -39,6 +39,10 @@ print('If this is inaccurate consider building muscle mucosa only model')
 clf.fit(X, y)
 
 # Import xy data (with appropriate alignment offset value)
+offset = 638.0
+print(f'Offset time set at {offset} seconds')
+
+
 print("Loading Jinshi's time/position data")
 time = pd.read_excel('/Users/jim/Library/CloudStorage/Box-Box/PhD/iknife-data/in-vivo-analysis/ex-vivo-model/data/griffin_tongue1_microrobot_position_data.xlsx')
 
@@ -60,7 +64,8 @@ g_data = np.log(g_data + logOS)
 
 # predict per scan on griffin data an add predictions Series to xy data
 # cut off based on TIC
-print('')
+threshold = 2e5
+print(f'TIC threshold for prediction set at {threshold:.2e}')
 
 # Plot predictions on xy data
 print('')
