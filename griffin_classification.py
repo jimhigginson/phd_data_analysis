@@ -45,11 +45,18 @@ time = pd.read_excel('/Users/jim/Library/CloudStorage/Box-Box/PhD/iknife-data/in
 # Import griffin data
 print('Importing raw binned griffin data')
 griffin_data_path = '/Users/jim/Library/CloudStorage/Box-Box/PhD/iknife-data/in-vivo-analysis/ex-vivo-model/data/2022_08_23_FIBRE_ROBOT_DAY_2_TONGUE_1_backgroundsubtracted.csv'
-test_data = pd.read_csv(griffin_data_path)
+g_data = pd.read_csv(griffin_data_path)
+metadata_cols = ['File', 'Start scan','Sum.','retention_time']
+g_metadata = g_data[metadata_cols]
+g_data = g_data.drop(metadata_cols + ['Class','End scan'], axis=1)
+
+print('Test data imported and split into metadata/data for subsequent transformation and prediction')
 
 
-# medlog transform and minmax griffin data
-print('')
+# medlog transform griffin data
+print('Median log transforming griffin_data')
+logOS = np.nanmedian(g_data[g_data!=0])
+g_data = np.log(g_data + logOS)
 
 # predict per scan on griffin data an add predictions Series to xy data
 # cut off based on TIC
