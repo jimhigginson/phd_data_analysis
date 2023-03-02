@@ -290,11 +290,12 @@ print(f'Starting creating correlation matrix at {start}')
 corr_matrix = X.corr(method = 'spearman').abs()
 
 '''
+mask = np.triu(np.ones_like(corr_matrix, dtype=bool))
 sns.set(font_scale = 1)
 print(f'Starting plot generation at {datetime.now()}')
 f, ax = plt.subplots(figsize=(7, 7))
 # Make heatmap
-sns.heatmap(corr_matrix, cmap= 'YlGnBu', square=True, ax = ax)
+sns.heatmap(corr_matrix, cmap= 'YlGnBu', square=True, vmin=-1, vmax=1, center=0,  mask=mask, ax = ax)
 f.tight_layout()
 # Save figure
 f.savefig(heat_map_path, dpi=500)
