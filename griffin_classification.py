@@ -86,22 +86,34 @@ threshold = 2e5
 print(f'TIC threshold for prediction set at {threshold:.2e}')
 
 g_metadata = pd.merge(g_metadata, interpolate, left_index=True, right_index=True, how='inner')
-g_metadata.loc[g_metadata['Sum.'] < threshold, 'prediction'] = 'No signal'
+g_metadata.loc[g_metadata['Sum.'] < threshold, 'prediction'] = 'Inadequate signal'
 
-colours.update({'No signal':'whitesmoke'})
+colours.update({'Inadequate signal':'whitesmoke'})
 
 
-'''
 # Plot predictions on xy data
 print('Will eventually do a static plot here')
 print('Setting x, y and hue values')
 
-stretch_factor = 1.1
+stretch_factor = 1
+marker_size = 80
+alpha = 0.6
+threshold = 0.15
 
 g_metadata['x-position'] = g_metadata['x-position'] ** stretch_factor
-
-sns.scatterplot(data=g_metadata, x = 'x-position', y = 'y-position', hue = 'prediction', s=18)
-plt.show()
+g_metadata = g_metadata.reset_index(drop=True)
+sns.set_style('dark')
+fig, ax = plt.subplots(figsize=(6,4))
+ax.set_xlim(0,10)
+ax.set_ylim(0,10)
+sns.kdeplot(data=g_metadata[g_metadata.prediction!='Inadequate signal'], x = 'x-position', y = 'y-position', hue = 'prediction', palette=colours, fill=True,levels=100,alpha=alpha, thresh=threshold)
+sns.scatterplot(data=g_metadata[g_metadata.prediction!='Inadequate signal'], x = 'x-position', y = 'y-position', hue = 'prediction', palette=colours, s=marker_size, alpha=0.9, edgecolor='none')
+sns.scatterplot(data=g_metadata[g_metadata.prediction=='Inadequate signal'], x = 'x-position', y = 'y-position', hue = 'prediction', palette=colours, s=marker_size, alpha=0.2, edgecolor='none')
+sns.despine(left=True, bottom=True)
+ax.set(xlabel=None, ylabel=None,xticklabels=[],yticklabels=[])
+ax.tick_params(bottom=False,left=False)
+ax.legend(title=None)
+plt.savefig('./figures/griffin_classification_map.pdf')
 '''
 print('Having a crack at animating')
 
@@ -117,3 +129,4 @@ print('Creating and saving animation')
 ani = FuncAnimation(fig, animate, frames=870, interval=200)
 ani.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 
+'''
