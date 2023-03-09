@@ -82,6 +82,7 @@ interpolate = interpolate.set_index('Time')
 # cut off based on TIC
 print('Setting predictions')
 g_metadata['prediction'] = clf.predict(g_data)
+g_metadata[['p_dys', 'p_fat','p_muc','p_mus']]= clf.predict_proba(g_data)
 threshold = 2e5
 print(f'TIC threshold for prediction set at {threshold:.2e}')
 
