@@ -5,8 +5,13 @@ in this script I'm going to create a function (or class??) that takes a pickled 
 from datetime import date
 import pickle
 from pp_data_import import data
-from ms_data_class import PeakPickedData
-from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
+from binned_data_import import data as binned_data
+from ms_data_class import PeakPickedData, BinnedData
+from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay, make_scorer, accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import LeaveOneGroupOut, cross_validate
 import matplotlib.pyplot as plt
 import pandas as pd
 from thesis_figure_parameters import tfParams
@@ -66,9 +71,9 @@ multiclass_rf_features
 
 models[0].fit(data.data[features[0]], data.binary_path)
 
-#models[1].fit(data.data[features[1]], data.binary_path)
+models[1].fit(data.data[features[1]], data.binary_path)
 models[2].fit(data.data[features[2]], data.path)
-#models[3].fit(data.data[features[3]], data.path)
+models[3].fit(data.data[features[3]], data.path)
 
 '''
 
@@ -148,7 +153,128 @@ Class that takes the filename (without the .pkl extension) of an RFECV model, an
 
 
 
-test = ModelEvaluator(models[0], data.log_transform_data[features[0]], data.binary_path)
+#test = ModelEvaluator(models[0], data.log_transform_data[features[0]], data.binary_path)
 #test2 = ModelEvaluator(models[1], data.data[features[1]], data.binary_path)
-icle = ModelEvaluator(models[2], data.log_transform_data[features[2]], data.path)
+#icle = ModelEvaluator(models[2], data.log_transform_data[features[2]], data.path)
 #icle2 = ModelEvaluator(models[3], data.data[features[3]], data.path)
+
+verbosity = 0
+n_jobs = 5
+
+logocv = LeaveOneGroupOut()
+
+scorers = {
+        'accuracy': make_scorer(accuracy_score),
+        'precision': make_scorer(precision_score, pos_label='Tumour', zero_division=1),
+        'recall': make_scorer(recall_score, pos_label='Tumour', zero_division=1),
+        'f1': make_scorer(f1_score, pos_label='Tumour', zero_division=1),
+        #'roc_auc': make_scorer(roc_auc_score) 
+        }
+
+multi_av = 'weighted'
+multiclass_scorers = {
+        'accuracy': make_scorer(accuracy_score),
+        'precision': make_scorer(precision_score, average=multi_av, zero_division=1),
+        'recall': make_scorer(recall_score, average=multi_av, zero_division=1),
+        'f1': make_scorer(f1_score, average=multi_av, zero_division=1),
+        #'roc_auc': make_scorer(roc_auc_score) 
+        }
+
+
+
+print('fitting models with rfecv features')
+
+binary_rf.fit(data.data[features[1]], data.binary_path)
+binary_lda.fit(data.data[features[0]], data.binary_path)
+multiclass_rf.fit(data.data[features[3]], data.path)
+multiclass_lda.fit(data.data[features[2]], data.path)
+
+print('fitting complete')
+
+
+print('Performing LOOCV and scoring binary random forest model')
+b_rf_score = pd.DataFrame(cross_validate(
+        estimator = binary_rf,
+        X = data.data[features[1]], 
+        y = data.binary_path,
+        groups = data.patient_number,
+        scoring = scorers,
+        cv = logocv,
+        verbose = verbosity,
+        n_jobs = n_jobs
+        ))
+
+print('Performing LOOCV and scoring multiclass random forest model')
+m_rf_score = pd.DataFrame(cross_validate(
+        estimator = multiclass_rf,
+        X = data.data[features[3]], 
+        y = data.path,
+        groups = data.patient_number,
+        scoring = multiclass_scorers,
+        cv = logocv,
+        verbose = verbosity,
+        n_jobs = n_jobs
+        ))
+
+
+print('Performing LOOCV and scoring binary LDA model')
+b_lda_score = pd.DataFrame(cross_validate(
+        estimator = binary_lda,
+        X = data.data[features[0]], 
+        y = data.binary_path,
+        groups = data.patient_number,
+        scoring = scorers,
+        cv = logocv,
+        verbose = verbosity,
+        n_jobs = n_jobs
+        ))
+
+print('Performing LOOCV and scoring multiclass LDA model')
+m_lda_score = pd.DataFrame(cross_validate(
+        estimator = multiclass_lda,
+        X = data.data[features[2]], 
+        y = data.path,
+        groups = data.patient_number,
+        scoring = multiclass_scorers,
+        cv = logocv,
+        verbose = verbosity,
+        n_jobs = n_jobs 
+        ))
+'''
+
+print('Now for the binned data analysis')
+
+binned_data = BinnedData(binned_data)
+X = binned_data.data
+y_1 = binned_data.binary_path
+y_2 = binned_data.path
+
+pipe = Pipeline([
+    ('scaler', MinMaxScaler()),
+    ('LDA', LinearDiscriminantAnalysis())
+    ])
+
+binned_b_lda_score = pd.DataFrame(cross_validate(
+        estimator = pipe,
+        X = X, 
+        y = y_1,
+        groups = binned_data.patient_number,
+        scoring = scorers,
+        cv = logocv,
+        verbose = verbosity,
+        n_jobs = n_jobs
+        ))
+
+
+binned_m_lda_score = pd.DataFrame(cross_validate(
+        estimator = pipe,
+        X = X, 
+        y = y_2,
+        groups = binned_data.patient_number,
+        scoring = multiclass_scorers,
+        cv = logocv,
+        verbose = verbosity,
+        n_jobs = n_jobs
+        ))
+'''
+
