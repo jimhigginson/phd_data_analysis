@@ -92,6 +92,7 @@ g_metadata.loc[g_metadata['Sum.'] < threshold, 'prediction'] = 'Inadequate signa
 colours.update({'Inadequate signal':'whitesmoke'})
 
 
+'''
 # Plot predictions on xy data
 print('Will eventually do a static plot here')
 print('Setting x, y and hue values')
@@ -115,7 +116,9 @@ ax.set(xlabel=None, ylabel=None,xticklabels=[],yticklabels=[])
 ax.tick_params(bottom=False,left=False)
 ax.legend(title=None)
 plt.savefig('./figures/griffin_classification_map.pdf')
-'''
+
+
+
 print('Having a crack at animating')
 
 def animate(i):
