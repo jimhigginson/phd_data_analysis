@@ -182,6 +182,7 @@ multiclass_scorers = {
 
 
 
+'''
 print('fitting models with rfecv features')
 
 binary_rf.fit(data.data[features[1]], data.binary_path)
@@ -276,5 +277,4 @@ binned_m_lda_score = pd.DataFrame(cross_validate(
         verbose = verbosity,
         n_jobs = n_jobs
         ))
-'''
 
